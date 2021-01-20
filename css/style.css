@@ -1,0 +1,87 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+body {
+    font-size: 18px;
+    font-family: "Roboto", sans-serif;
+    padding-bottom: 80px;
+}
+
+label {
+    color: #ff7713;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+#accordion {
+    margin-bottom: 30px;
+}
+
+#accordion a.card-link {
+    padding: 15px;
+    display: block;
+    color: #495057;
+    font-weight: 500;
+}
+
+#accordion .card-header {
+    padding: 0;
+}
+
+#accordion .card {
+    margin-bottom: 25px;
+}
+
+.error {
+    color: red;
+    font-weight: 400;
+    font-size: 16px;
+    border-color: red;
+    margin-top: 5px;
+}
+
+.nav-pills .nav-link {
+    color: #495057;
+    border: 2px solid #ff7713;
+    max-width: 70px;
+    margin: 0 auto;
+    padding: 5px;
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #ff7713;
+    border: 2px solid #ff7713;
+}
+
+.nav-pills li.nav-item {
+    padding: 0 10px 20px;
+    width: 20%;
+    padding: 0 10px 15px;
+    text-align: center;
+    font-size: 20px;
+	font-weight: bold;
+}
+
+.tab-content .tab-pane {
+    border: 2px solid #e8e8e8;
+    padding: 15px;
+    margin-bottom: 30px;
+}
+
+label {
+    margin-top: 20px;
+}
+
+.form-check label {
+	margin: 0;
+	font-weight: 400;
+	color: #495057;
+	margin-bottom: 15px;
+	margin-left: 15px;
+	margin-top: 2px;
+}
+
+input[type=checkbox], input[type=radio] {
+    height: 20px;
+    width: 20px;
+}
