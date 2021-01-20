@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE);
 session_start();
 if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
     header("location: /login.php");
@@ -523,6 +524,7 @@ foreach ($ocena_mpo as $ocena) {
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <a href="logout.php" class="btn btn-danger btn-lg mt-4">Odustani</a>
                     <input class="btn btn-success float-right btn-lg mt-4" type="submit" value="Završi" id="submit" name="submit">
                 </div>
             </div>
