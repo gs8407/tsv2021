@@ -65,15 +65,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         } else {
                             // Display an error message if password is not valid
-                            $password_err = "The password you entered was not valid.";
+                            $password_err = "Šifra koju ste uneli nije validna.";
                         }
                     }
                 } else {
                     // Display an error message if username doesn't exist
-                    $username_err = "No account found with that username.";
+                    $username_err = "Ne postoji nalog sa unetim korisničkim imenom.";
                 }
             } else {
-                echo "Oops! Something went wrong. Please try again later.";
+                echo "Nešto nije uredu. Molimo pokušajte ponovo.";
             }
         } else {
             echo "Something's wrong with the query: " . mysqli_error($conn);
@@ -222,6 +222,7 @@ date_default_timezone_set('Europe/Belgrade');
     span.help-block {
         font-size: 14px;
         color: #fd4141;
+        display: block;
     }
     </style>
 </head>

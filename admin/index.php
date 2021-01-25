@@ -4,7 +4,7 @@ require_once '../config.php';
 
 date_default_timezone_set('Europe/Belgrade');
 
-$sql = "SELECT id, menadzer, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, opis_naloga1, ime_zaposlenog1, saglasan1, funkcija1, opis_naloga2, ime_zaposlenog2, saglasan2, funkcija2, opis_naloga3, ime_zaposlenog3, saglasan3, funkcija3, opis_naloga4, ime_zaposlenog4, saglasan4, funkcija4, opis_naloga5, ime_zaposlenog5, saglasan5, funkcija5, opis_naloga6, saglasan6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, saglasan7, funkcija7, opis_naloga8, ime_zaposlenog8, saglasan8, funkcija8, opis_naloga9, ime_zaposlenog9, saglasan9, funkcija9, opis_naloga10, ime_zaposlenog10, saglasan10, funkcija10 FROM izvestaji";
+$sql = "SELECT id, menadzer, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, opis_naloga1, ime_zaposlenog1, saglasan1, funkcija1, opis_naloga2, ime_zaposlenog2, saglasan2, funkcija2, opis_naloga3, ime_zaposlenog3, saglasan3, funkcija3, opis_naloga4, ime_zaposlenog4, saglasan4, funkcija4, opis_naloga5, ime_zaposlenog5, saglasan5, funkcija5, opis_naloga6, saglasan6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, saglasan7, funkcija7, opis_naloga8, ime_zaposlenog8, saglasan8, funkcija8, opis_naloga9, ime_zaposlenog9, saglasan9, funkcija9, opis_naloga10, ime_zaposlenog10, saglasan10, funkcija10 FROM izvestaji ORDER BY id DESC";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {

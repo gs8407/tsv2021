@@ -86,7 +86,7 @@ if ($result_razlog->num_rows > 0) {
     }
 }
 
-$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA]";
+$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA] OR WILDCARD = 1";
 $result_objekat = $conn->query($sql_objekat);
 if ($result_objekat->num_rows > 0) {
     while ($row = $result_objekat->fetch_assoc()) {
