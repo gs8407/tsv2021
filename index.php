@@ -109,13 +109,17 @@ if ($result_objekat->num_rows > 0) {
                 <h4>Menadžer: <?php echo $mpo["NAZIV"]; ?></h4>
             </div>
         </div>
-        <form id="poseta">
+        <form id="poseta" method="POST" enctype="multipart/form-data">
             <input type="hidden" class="form-control" id="menadzer" name="menadzer" value="<?php echo $_SESSION["javna"]; ?>">
             <input type="hidden" class="form-control" id="datum" name="datum" value="<?php echo date("Y-m-d"); ?>">
             <input type="hidden" class="form-control" id="vreme" name="vreme" value="<?php echo date("H:i:s"); ?>">
             <input type="hidden" class="form-control" id="ip_adresa" name="ip_adresa" value="<?php echo getUserIP(); ?>">
             <div class="row">
                 <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Upload slike</label>
+                        <input id="file" type="file" name="file" />
+                    </div>
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
                         <select class="form-control" id="objekat" name="objekat">
@@ -124,13 +128,7 @@ if ($result_objekat->num_rows > 0) {
 foreach ($skladista as $skladiste) {
     echo "<option value='" . $skladiste["id"] . "'>" . $skladiste["NAZIV"] . "</option>";
 }
-
 ?>
-                            <!-- <option value="test">RAKOVICA-Pilota Mihaila Petrovića 6</option>
-                            <option value="test">ZARKOVO-Por.Spasića i Mašere 20</option>
-                            <option value="test">USTANIČKA-Ustanička 194</option>
-                            <option value="test">OBRENOVAC2-Vuka Karadžića 98</option>
-                            <option value="test">SVILAJNAC-Ustanička bb</option> -->
                         </select>
                     </div>
                 </div>
@@ -150,9 +148,6 @@ foreach ($razlozi as $razlog) {
 ?>
 
                         <label for="razlog[]" class="error" style="display: none">Izaberite</label>
-
-
-
                     </div>
                 </div>
                 <div class="col-md-12">
@@ -558,15 +553,18 @@ foreach ($ocena_mpo as $ocena) {
         }, // end messages
 
         submitHandler: function(form) {
-            var form = $("#poseta"); // contact form
-            var submitButton = $("#submit"); // submit button
-            var message = $('#poruka'); // alert div for show alert message
+            var submitButton = $("#submit");
+            var message = $('#poruka');
+            var formData = new FormData($("#poseta")[0]);
+            formData.append('image', $('#file')[0].files[0]); 
 
             $.ajax({
-                url: 'izvestaj-ajax.php', // form action url
-                type: 'POST', // form submit method get/post
-                dataType: 'html', // request type html/json/xml
-                data: $("#poseta").serialize(), // serialize form data
+                url: 'izvestaj-ajax.php', 
+                type: 'POST', 
+                enctype: 'multipart/form-data',
+                data: formData,
+                processData: false,
+                contentType: false,
                 beforeSend: function() {
                     // message.fadeOut();
                     submitButton.html('Snima se....'); // change submit button text
@@ -575,7 +573,7 @@ foreach ($ocena_mpo as $ocena) {
                 success: function(data) {
                     $("input#submit").hide();
                     var response = data;
-                    form.trigger('reset'); // reset form
+                    // form.trigger('reset'); // reset form
                     message.html(data);
                     $('#uspesno').modal('show');
                 },
@@ -589,19 +587,21 @@ foreach ($ocena_mpo as $ocena) {
     }); //end validate
     </script>
 
-<div class="modal" tabindex="-1" role="dialog" id="uspesno">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal" tabindex="-1" role="dialog" id="uspesno">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
 
-      <div class="modal-body">
-        <p><div id="poruka"></div></p>
-      </div>
-      <div class="modal-footer">
-        <a href="logout.php"><button type="button" class="btn btn-primary">OK</button></a>
-      </div>
+                <div class="modal-body">
+                    <p>
+                    <div id="poruka"></div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <a href="logout.php"><button type="button" class="btn btn-primary">OK</button></a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
 </body>
 
