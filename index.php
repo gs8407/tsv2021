@@ -101,8 +101,6 @@ if ($result_objekat->num_rows > 0) {
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-
-                <!-- <h2 class="text-center mb-5 mt-4">Dnevne aktivnosti menadžera</h2> -->
                 <h4 class="mb-4 mt-3 text-center"><strong>Datum:</strong>
                     <?php echo date("d-m-Y H:i:s"); ?>
                 </h4>
