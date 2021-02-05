@@ -114,10 +114,10 @@ if ($result_objekat->num_rows > 0) {
             <input type="hidden" class="form-control" id="ip_adresa" name="ip_adresa" value="<?php echo getUserIP(); ?>">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label>Upload slike</label>
                         <input id="file" type="file" name="file" />
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
                         <select class="form-control" id="objekat" name="objekat">
