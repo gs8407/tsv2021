@@ -86,7 +86,15 @@ if ($result_razlog->num_rows > 0) {
     }
 }
 
-$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA] OR WILDCARD = 1";
+$sql_funkcija = "SELECT id, naziv FROM funkcije";
+$result_funkcija = $conn->query($sql_funkcija);
+if ($result_funkcija->num_rows > 0) {
+    while ($row = $result_funkcija->fetch_assoc()) {
+        $funkcije[] = $row;
+    }
+}
+
+$sql_objekat = "SELECT id, NAZIV, SIFRA, WILDCARD FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA] OR WILDCARD = 1";
 $result_objekat = $conn->query($sql_objekat);
 if ($result_objekat->num_rows > 0) {
     while ($row = $result_objekat->fetch_assoc()) {
@@ -120,11 +128,11 @@ if ($result_objekat->num_rows > 0) {
                     </div> -->
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
-                        <select class="form-control" id="objekat" name="objekat">
+                        <select class="form-control" id="objekat" name="objekat" >
                             <option selected disabled>-- Izaberi --</option>
                             <?php
 foreach ($skladista as $skladiste) {
-    echo "<option value='" . $skladiste["id"] . "'>" . $skladiste["NAZIV"] . "</option>";
+    echo "<option value='" . $skladiste["id"] . "' data-wildcard=" . $skladiste['WILDCARD'] .">" . $skladiste["NAZIV"] . "</option>";
 }
 ?>
                         </select>
@@ -218,8 +226,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija1">Funkcija:</label>
                                 <select class="form-control" id="funkcija1" name="funkcija1">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -246,8 +257,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija2">Funkcija:</label>
                                 <select class="form-control" id="funkcija2" name="funkcija2">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -274,8 +288,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija3">Funkcija:</label>
                                 <select class="form-control" id="funkcija3" name="funkcija3">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -302,8 +319,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija4">Funkcija:</label>
                                 <select class="form-control" id="funkcija4" name="funkcija4">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -330,8 +350,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija5">Funkcija:</label>
                                 <select class="form-control" id="funkcija5" name="funkcija5">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -358,8 +381,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija6">Funkcija:</label>
                                 <select class="form-control" id="funkcija6" name="funkcija6">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -386,8 +412,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija7">Funkcija:</label>
                                 <select class="form-control" id="funkcija7" name="funkcija7">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -414,8 +443,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija8">Funkcija:</label>
                                 <select class="form-control" id="funkcija8" name="funkcija8">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -442,8 +474,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija10">Funkcija:</label>
                                 <select class="form-control" id="funkcija9" name="funkcija9">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -470,8 +505,11 @@ foreach ($razlozi as $razlog) {
                                 <label for="funkcija10">Funkcija:</label>
                                 <select class="form-control" id="funkcija10" name="funkcija10">
                                     <option disabled selected>-- Izaberi --</option>
-                                    <option value="1">Poslovođa</option>
-                                    <option value="2">Prodavac</option>
+                                    <?php
+foreach ($funkcije as $funkcija) {
+    echo "<option value='" . $funkcija['id'] . "'>" . $funkcija['naziv'] . "</option>";
+}
+?>
                                 </select>
                             </div>
                         </div>
@@ -533,9 +571,21 @@ foreach ($ocena_mpo as $ocena) {
         rules: {
             objekat: "required",
             razlog: "required",
-            ocena_izlaganja: "required",
-            ocena_izgleda: "required",
-            ocena_mpo: "required",
+            ocena_izlaganja: {
+                required: function(element) {
+                    return $('#objekat').find('option:selected').data('wildcard') != 1;
+                }
+            },
+            ocena_izgleda: {
+                required: function(element) {
+                    return $('#objekat').find('option:selected').data('wildcard') != 1;
+                }
+            },
+            ocena_mpo: {
+                required: function(element) {
+                    return $('#objekat').find('option:selected').data('wildcard') != 1;
+                }
+            },
             "razlog[]": {
                 required: true,
                 minlength: 1
@@ -554,11 +604,11 @@ foreach ($ocena_mpo as $ocena) {
             var submitButton = $("#submit");
             var message = $('#poruka');
             var formData = new FormData($("#poseta")[0]);
-            formData.append('image', $('#file')[0].files[0]); 
+            // formData.append('image', $('#file')[0].files[0]);
 
             $.ajax({
-                url: 'izvestaj-ajax.php', 
-                type: 'POST', 
+                url: 'izvestaj-ajax.php',
+                type: 'POST',
                 enctype: 'multipart/form-data',
                 data: formData,
                 processData: false,
