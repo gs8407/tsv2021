@@ -70,6 +70,10 @@ if ($result_objekat->num_rows > 0) {
     .ocene-container label {
         margin-top: 0;
     }
+
+    th.sorting_asc {
+        display: none;
+    }
     </style>
 </head>
 
@@ -80,7 +84,7 @@ if ($result_objekat->num_rows > 0) {
     </div>
     <div class="container">
 
-        <form id="izvestaj" method="POST" action="promet-po-objektima-action.php">
+        <form id="izvestaj" method="POST" action="promet-po-objektima-action_export.php">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -174,7 +178,7 @@ foreach ($razlozi as $razlog) {
         </form>
     </div>
 
-    <div class="container-fluid">
+    <div class="container">
         <div id="tabela"></div>
     </div>
 
@@ -190,25 +194,8 @@ foreach ($razlozi as $razlog) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.0/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-    <script>
-    function pdf() {
-        var doc = new jsPDF();
-        var elementHTML = $('#tabela').html();
-        var specialElementHandlers = {
-            '#elementH': function(element, renderer) {
-                return true;
-            }
-        };
-        doc.fromHTML(elementHTML, 15, 15, {
-            'width': 170,
-            'elementHandlers': specialElementHandlers
-        });
 
-        // Save the PDF
-        doc.save('sample-document.pdf');
-    }
+    <script>
     $(document).ready(function() {
 
         $('input[name="datum"]').daterangepicker({
@@ -311,17 +298,19 @@ foreach ($razlozi as $razlog) {
                     $('#tabela-prva').DataTable({
                         dom: 'Bfrtip',
                         buttons: [{
-                                extend: 'excelHtml5',
-                                footer: true
+                            extend: 'pdfHtml5',
+                            exportOptions: {
+                                stripNewlines: false,
                             },
-                            {
-                                extend: 'pdfHtml5',
-                                footer: true
-                            }
-                        ],
-                        "order": [
-                            [0, 'asc']
-                        ],
+                            footer: false,
+                            header: false
+                        }],
+
+                        customize: function(doc) {
+                            //pageMargins [left, top, right, bottom] 
+                            doc.pageMargins = [150, 20, 150, 20];
+                        },
+
                         "language": {
                             "sProcessing": "Procesiranje u toku...",
                             "sLengthMenu": "Prikaži _MENU_ elemenata",
