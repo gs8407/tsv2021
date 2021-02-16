@@ -84,7 +84,7 @@ if ($result_objekat->num_rows > 0) {
     </div>
     <div class="container">
 
-        <form id="izvestaj" method="POST" action="promet-po-objektima-action_export.php">
+        <form id="izvestaj" method="POST" action="promet-po-objektima-action.php">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">

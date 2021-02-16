@@ -1,6 +1,6 @@
 <?php
 // header('Content-Type: application/json; charset=utf-8');
-
+error_reporting(E_ALL & ~E_NOTICE);
 include "../config.php";
 
 $podaci = array();
@@ -128,7 +128,7 @@ LEFT JOIN korisnik
 ON menadzer = korisnik.JAVNA
 LEFT JOIN skla
 ON skla.SIFRA = objekat
-$upiti";
+$upiti ORDER BY datum DESC";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
@@ -138,8 +138,14 @@ if ($result->num_rows > 0) {
 
 if ($podaci) {?>
 
-<div id="pdf">
-    <div class="container">
+<table id="tabela-prva" class="display table dataTable">
+    <thead>
+        <tr>
+            <th>Sadrzaj</th>
+        </tr>
+    </thead>
+    <tbody>
+
         <?php foreach ($podaci as $podatak) {
     foreach ($razlozi as $razlog) {
         $find = $razlog['id'];
@@ -148,21 +154,22 @@ if ($podaci) {?>
         $podatak['razlog'] = str_replace($find, $replace, $arr);
     }
     ?>
-        <div class="card mb-3">
-            <div class="card-body">
-                <h5 class="card-title">Radnja: <?php echo $podatak['objekat']; ?> - <?php echo $podatak['NAZIV']; ?>; Menadžer: <?php echo $podatak['IME']; ?> (<?php echo $podatak['menadzer']; ?>)<br>Login: <?php echo $podatak['datum']; ?> <?php echo str_replace(".000000", "", $podatak['vreme']); ?> Logout: <?php echo $podatak['datum']; ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']); ?></h5>
-                <p>Razlog posete: <strong><?php echo $podatak['razlog']; ?></strong><br>
-                    Ocena opšteg izlaganja robe: <strong><?php echo $podatak['ocena_izlaganja']; ?></strong>; Ocena opšteg izgleda i higijene: <strong><?php echo $podatak['ocena_izgleda']; ?></strong>; Ocena MPO: <strong><?php echo $podatak['ocena_mpo']; ?></strong></p>
+        <tr>
+            <td>
+            <?php echo "\n\n"; ?>
+                <p style="margin-bottom: 0"><strong>Radnja: <?php echo $podatak['objekat']; ?> - <?php echo $podatak['NAZIV']; ?>; Menadžer: <?php echo $podatak['IME']; ?> (<?php echo $podatak['menadzer']; ?>)</strong></p>
+                <p><strong>Login: <?php echo $podatak['datum']; ?> <?php echo str_replace(".000000", "", $podatak['vreme']); ?> Logout: <?php echo $podatak['datum']; ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']); ?></strong></p>
+                <p>Razlog posete: <strong><?php echo $podatak['razlog']; ?></strong></p>
+                <p>Ocena opšteg izlaganja robe: <strong><?php echo $podatak['ocena_izlaganja']; ?></strong>; Ocena opšteg izgleda i higijene: <strong><?php echo $podatak['ocena_izgleda']; ?></strong>; Ocena MPO: <strong><?php echo $podatak['ocena_mpo']; ?></strong></p>
                 <?php if ($podatak['napomena']) {?>
                 <p>Napomena i zapažanja:<br><?php echo $podatak['napomena']; ?></p>
                 <?php }?>
 
                 <?php
 if ($podatak['opis_naloga1']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga1'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog1'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 1: </strong></p>\n<p>" . $podatak['opis_naloga1'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog1'] . ", ";
         echo "Saglasan: " . $podatak['saglasan1'] . ", ";
-
         foreach ($funkcije as $funkcija) {
             switch ($podatak['funkcija1']) {
                 case $funkcija['id']:
@@ -178,78 +185,180 @@ if ($podatak['opis_naloga1']) {
     }
 
     if ($podatak['opis_naloga2']) {
-        echo "Nalog 2: <br>" . $podatak['opis_naloga2'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog2'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 2: </strong></p>\n<p>" . $podatak['opis_naloga2'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog2'] . ", ";
         echo "Saglasan: " . $podatak['saglasan2'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija2'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija2']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga3']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga3'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog3'] . ", ";
-        echo "Saglasan: " . $podatak['saglasan3'] . $podatak['saglasan3'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija3'];
+        echo "<p style='margin-bottom: 0'><strong>Nalog 3: </strong></p>\n<p>" . $podatak['opis_naloga3'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog3'] . ", ";
+        echo "Saglasan: " . $podatak['saglasan3'] . ", ";
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija3']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga4']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga4'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog4'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 4: </strong></p>\n<p>" . $podatak['opis_naloga4'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog4'] . ", ";
         echo "Saglasan: " . $podatak['saglasan4'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija4'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija4']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga5']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga5'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog5'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 5: </strong></p>\n<p>" . $podatak['opis_naloga5'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog5'] . ", ";
         echo "Saglasan: " . $podatak['saglasan5'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija5'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija5']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga6']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga6'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog6'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 6: </strong></p>\n<p>" . $podatak['opis_naloga6'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog6'] . ", ";
         echo "Saglasan: " . $podatak['saglasan6'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija6'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija6']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga7']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga7'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog7'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 7: </strong></p>\n<p>" . $podatak['opis_naloga7'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog7'] . ", ";
         echo "Saglasan: " . $podatak['saglasan7'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija7'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija7']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga8']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga8'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog8'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 8: </strong></p>\n<p>" . $podatak['opis_naloga8'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog8'] . ", ";
         echo "Saglasan: " . $podatak['saglasan8'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija8'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija8']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga9']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga9'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog9'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 9: </strong></p>\n<p>" . $podatak['opis_naloga9'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog9'] . ", ";
         echo "Saglasan: " . $podatak['saglasan9'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija9'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija9']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
 
     if ($podatak['opis_naloga10']) {
-        echo "Nalog 1: <br>" . $podatak['opis_naloga10'] . ", ";
-        echo "Zaposleni " . $podatak['ime_zaposlenog10'] . ", ";
+        echo "<p style='margin-bottom: 0'><strong>Nalog 10: </strong></p>\n<p>" . $podatak['opis_naloga10'] . "</p>\n";
+        echo "<p>Zaposleni: " . $podatak['ime_zaposlenog10'] . ", ";
         echo "Saglasan: " . $podatak['saglasan10'] . ", ";
-        echo "Funkcija: " . $podatak['funkcija10'];
+        foreach ($funkcije as $funkcija) {
+            switch ($podatak['funkcija10']) {
+                case $funkcija['id']:
+                    echo "Funkcija: " . $funkcija['naziv'];
+                    break;
+
+                default:
+                    # code...
+                    break;
+            }
+        }
+
     }
     ?>
-
-            </div>
-        </div>
+<?php echo "\n\n"; ?>
+            </td>
+        </tr>
         <?php }
 
-} else {
-    echo "<h4 style='text-align: center'>Nema podataka za traženi upit.</h4>";
 }
-
 ?>
 
-    </div>
-</div>
+
+    </tbody>
+    <tfooter>
+        <tr>
+            <th></th>
+        </tr>
+    </tfooter>
+</table>
