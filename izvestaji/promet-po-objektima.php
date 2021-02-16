@@ -39,7 +39,7 @@ if ($result_objekat->num_rows > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TSV Diskont - Total po objektima</title>
+    <title>TSV Diskont - Promet po objektima</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
@@ -80,10 +80,7 @@ if ($result_objekat->num_rows > 0) {
     </div>
     <div class="container">
 
-
-
-
-        <form id="izvestaj" method="POST" action="total-po-objektima-action.php">
+        <form id="izvestaj" method="POST" action="promet-po-objektima-action.php">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
@@ -164,14 +161,14 @@ foreach ($razlozi as $razlog) {
                     <div class="form-group">
                         <label for="datum">Vremenski period:</label>
                         <div class="d-flex">
-                            <label for="datum" class="mt-0"><input type="text" class="form-control" name="datum" id="datum"></label>
+                            <label for="datum" class="mt-0"><input class="form-control" class="form-control" type="text" name="datum" id="datum"></label>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-12">
                     <!-- <a href="logout.php" class="btn btn-danger btn-lg mt-4">Odustani</a> -->
-                    <input class="btn btn-success float-right btn-lg mt-4 mb-5" type="submit" value="Prikaži" id="submit" name="submit">
+                    <input class="btn btn-success float-right btn-lg mt-4  mb-5" type="submit" value="Prikaži" id="submit" name="submit">
                 </div>
             </div>
         </form>
@@ -193,8 +190,25 @@ foreach ($razlozi as $razlog) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
     <script>
+    function pdf() {
+        var doc = new jsPDF();
+        var elementHTML = $('#tabela').html();
+        var specialElementHandlers = {
+            '#elementH': function(element, renderer) {
+                return true;
+            }
+        };
+        doc.fromHTML(elementHTML, 15, 15, {
+            'width': 170,
+            'elementHandlers': specialElementHandlers
+        });
+
+        // Save the PDF
+        doc.save('sample-document.pdf');
+    }
     $(document).ready(function() {
 
         $('input[name="datum"]').daterangepicker({

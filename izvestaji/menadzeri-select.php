@@ -16,7 +16,7 @@ if ($result_objekat->num_rows > 0) {
         //echo "<option value='" . $skladista['SIFRA'] . "'>" . $skladista['SIFRA'] . " - " . $skladista['NAZIV'] ."></option>";
     }
 }
-echo "<option value='999999999'>-- Sva --</option>";
+echo "<option value='999999999'>-- Svi --</option>";
 foreach($skladista as $skladiste) {
-    echo "<option value='" . $skladiste['SIFRA'] . "'>" . $skladiste['SIFRA'] . " - " . $skladiste['NAZIV'] ."></option>";
+    echo "<option value='" . $skladiste['SIFRA'] . "'>" . $skladiste['SIFRA'] . " - " . $skladiste['NAZIV'] ."</option>";
 }
