@@ -77,7 +77,7 @@ ocena_izgleda,
 menadzer,
 objekat,
 IME,
-datum,
+izvestaji.datum,
 vreme,
 vreme_zavrsetka,
 napomena,
@@ -128,7 +128,7 @@ LEFT JOIN korisnik
 ON menadzer = korisnik.JAVNA
 LEFT JOIN skla
 ON skla.SIFRA = objekat
-$upiti ORDER BY datum DESC";
+$upiti ORDER BY izvestaji.datum DESC";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {

@@ -40,7 +40,7 @@ if (isset($_POST['ocena_mpo_do'])) {
 }
 
 if (isset($_POST['datum']) && $_POST['datum'] != "") {
-    $datum = "datum BETWEEN '" . date("Y/m/d", strtotime(explode(" - ", $_POST["datum"])[0])) . "' AND '" . date("Y/m/d", strtotime(explode(" - ", $_POST["datum"])[1])) . "'";
+    $datum = "izvestaji.datum BETWEEN '" . date("Y-m-d", strtotime(explode(" - ", $_POST["datum"])[0])) . "' AND '" . date("Y-m-d", strtotime(explode(" - ", $_POST["datum"])[1])) . "'";
 } else {
     $datum = "";
 }
@@ -52,6 +52,7 @@ if ($upiti) {
     $upiti = "WHERE " . $upiti;
 }
 
+
 $sql_ukupno = "SELECT COUNT(id) AS ukupno FROM izvestaji $upiti";
 $result = $conn->query($sql_ukupno);
 if ($result->num_rows > 0) {
@@ -59,6 +60,7 @@ if ($result->num_rows > 0) {
         $ukupno_naloga = $row['ukupno'];
     }
 }
+
 
 $podaci = array();
 
@@ -77,7 +79,8 @@ ON menadzer = korisnik.JAVNA
 LEFT JOIN skla
 ON skla.SIFRA = objekat
 $upiti
-GROUP BY objekat, menadzer, NAZIV;";
+
+GROUP BY objekat, menadzer, NAZIV";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
