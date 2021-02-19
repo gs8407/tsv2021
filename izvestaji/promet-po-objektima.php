@@ -24,7 +24,7 @@ if ($result_razlog->num_rows > 0) {
     }
 }
 
-$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla";
+$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla ORDER BY SIFRA";
 $result_objekat = $conn->query($sql_objekat);
 if ($result_objekat->num_rows > 0) {
     while ($row = $result_objekat->fetch_assoc()) {
@@ -177,7 +177,6 @@ foreach ($razlozi as $razlog) {
             </div>
         </form>
     </div>
-
     <div class="container">
         <div id="tabela"></div>
     </div>
@@ -196,6 +195,20 @@ foreach ($razlozi as $razlog) {
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
     <script>
+     function downloadExcel() {
+            var form = $("#izvestaj");
+            var url = "promet-po-objektima-export.php";
+            // e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                success: function(data) {
+                    window.open('promet-po-objektima-export.php?' + form.serialize());
+                }
+            });
+
+        };
     $(document).ready(function() {
 
         $('input[name="datum"]').daterangepicker({
@@ -282,10 +295,12 @@ foreach ($razlozi as $razlog) {
             });
         });
 
+
+       
+
         $("#izvestaj").submit(function(e) {
             var form = $(this);
             var url = form.attr('action');
-
             e.preventDefault();
             $.ajax({
                 type: "POST",
@@ -297,18 +312,21 @@ foreach ($razlozi as $razlog) {
 
                     $('#tabela-prva').DataTable({
                         dom: 'Bfrtip',
+                        // buttons: [{
+                        //     extend: 'excelHtml5',
+
+                        // }],
+
                         buttons: [{
-                            extend: 'pdfHtml5',
-                            exportOptions: {
-                                stripNewlines: false,
-                            },
-                            footer: false,
-                            header: false
+                            text: 'Excel',
+                            action: function(e, dt, node, config) {
+                                downloadExcel();
+                            }
                         }],
 
                         customize: function(doc) {
-                            //pageMargins [left, top, right, bottom] 
-                            doc.pageMargins = [150, 20, 150, 20];
+                            //pageMargins [left, top, right, bottom]
+                            doc.pageMargins = [50, 20, 50, 20];
                         },
 
                         "language": {
