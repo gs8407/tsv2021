@@ -295,7 +295,9 @@ foreach ($razlozi as $razlog) {
                     $('#tabela').html(data);
 
                     $('#tabela-prva').DataTable({
-                        dom: 'Bfrtip',
+                        dom: 'Blfrtip',
+                        "pageLength": 50,
+                        "lengthMenu": [[50, 200, 500, -1], [50, 200, 500, "Sve"]],
                         buttons: [{
                                 extend: 'excelHtml5',
                                 footer: true

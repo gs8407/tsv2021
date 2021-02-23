@@ -74,6 +74,12 @@ if ($result_objekat->num_rows > 0) {
     th.sorting_asc {
         display: none;
     }
+    iframe {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+        display: block;
+    }
     </style>
 </head>
 
@@ -177,6 +183,7 @@ foreach ($razlozi as $razlog) {
             </div>
         </form>
     </div>
+   <div class="container"> <div id="exportPDF"></div></div>
     <div class="container">
         <div id="tabela"></div>
     </div>
@@ -195,20 +202,26 @@ foreach ($razlozi as $razlog) {
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
     <script>
-     function downloadExcel() {
-            var form = $("#izvestaj");
-            var url = "promet-po-objektima-export.php";
-            // e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: form.serialize(),
-                success: function(data) {
-                    window.open('promet-po-objektima-export.php?' + form.serialize());
-                }
-            });
+    function downloadExcel() {
+        var form = $("#izvestaj");
+        var url = "promet-po-objektima-export.php";
+        // e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: form.serialize(),
+            success: function(data) {
+                $('#exportPDF').html("");
+                $('<iframe>', {
+                    src: 'promet-po-objektima-export.php?' + form.serialize(),
+                    frameborder: 0,
+                    scrolling: 'no'
+                }).appendTo('#exportPDF');
+                // window.open('promet-po-objektima-export.php?' + form.serialize());
+            }
+        });
 
-        };
+    };
     $(document).ready(function() {
 
         $('input[name="datum"]').daterangepicker({
@@ -296,7 +309,7 @@ foreach ($razlozi as $razlog) {
         });
 
 
-       
+
 
         $("#izvestaj").submit(function(e) {
             var form = $(this);
@@ -311,11 +324,7 @@ foreach ($razlozi as $razlog) {
                     $('#tabela').html(data);
 
                     $('#tabela-prva').DataTable({
-                        dom: 'Bfrtip',
-                        // buttons: [{
-                        //     extend: 'excelHtml5',
-
-                        // }],
+                        dom: 'Blfrtip',
 
                         buttons: [{
                             text: 'Excel',
@@ -328,6 +337,12 @@ foreach ($razlozi as $razlog) {
                             //pageMargins [left, top, right, bottom]
                             doc.pageMargins = [50, 20, 50, 20];
                         },
+
+                        "pageLength": 50,
+                        "lengthMenu": [
+                            [50, 200, 500, -1],
+                            [50, 200, 500, "Sve"]
+                        ],
 
                         "language": {
                             "sProcessing": "Procesiranje u toku...",

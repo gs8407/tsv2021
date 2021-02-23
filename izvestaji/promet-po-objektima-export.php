@@ -9,8 +9,8 @@
 
 </head>
 
-<body style="height: 100vh; overflow: hidden; opacity: 0">
-
+<body>
+<div id="spinner"><img src="/img/spinner.gif" alt=""></div>
     <?php
 // header('Content-Type: application/json; charset=utf-8');
 
@@ -151,34 +151,34 @@ if ($result->num_rows > 0) {
 }
 
 if ($podaci) {?>
+    <div style="height: 100vh; overflow: hidden; opacity: 0">
+        <table class="table" id="tabela-prva">
+            <thead>
+                <tr>
+                    <th>Radnja</th>
+                    <th>Menadžer</th>
+                    <th>Login</th>
+                    <th>Logout</th>
+                    <th>Razlog posete</th>
+                    <th>Ocena opšteg izlaganja robe</th>
+                    <th>Ocena opšteg izgleda i higijene</th>
+                    <th>Ocena MPO</th>
+                    <th>Napomena i zapažanja</th>
+                    <th>Nalog 1</th>
+                    <th>Nalog 2</th>
+                    <th>Nalog 3</th>
+                    <th>Nalog 4</th>
+                    <th>Nalog 5</th>
+                    <th>Nalog 6</th>
+                    <th>Nalog 7</th>
+                    <th>Nalog 8</th>
+                    <th>Nalog 9</th>
+                    <th>Nalog 10</th>
+                </tr>
+            </thead>
+            <tbody>
 
-    <table class="table" id="tabela-prva">
-        <thead>
-            <tr>
-                <th>Radnja</th>
-                <th>Menadžer</th>
-                <th>Login</th>
-                <th>Logout</th>
-                <th>Razlog posete</th>
-                <th>Ocena opšteg izlaganja robe</th>
-                <th>Ocena opšteg izgleda i higijene</th>
-                <th>Ocena MPO</th>
-                <th>Napomena i zapažanja</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-                <th>Napomena</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <?php foreach ($podaci as $podatak) {
+                <?php foreach ($podaci as $podatak) {
         foreach ($razlozi as $razlog) {
         $find = $razlog['id'];
         $replace = $razlog['naziv'];
@@ -186,31 +186,31 @@ if ($podaci) {?>
         $podatak['razlog'] = str_replace($find, $replace, $arr);
     }
     ?>
-            <tr>
-                <td>
-                    <?php echo $podatak['objekat']; ?> - <?php echo $podatak['NAZIV']; ?>
-                </td>
-                <td>
-                    <?php echo $podatak['IME']; ?> (<?php echo $podatak['menadzer']; ?>)
-                </td>
+                <tr>
+                    <td>
+                        <?php echo $podatak['objekat']; ?> - <?php echo $podatak['NAZIV']; ?>
+                    </td>
+                    <td>
+                        <?php echo $podatak['IME']; ?> (<?php echo $podatak['menadzer']; ?>)
+                    </td>
 
-                <td>
-                    <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme']); ?>
-                </td>
-                <td>
-                    <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']);?>
-                </td>
-                <td>
-                    <?php echo $podatak['razlog']; ?>
-                </td>
-                <td><?php echo $podatak['ocena_izlaganja']; ?></td>
-                <td><?php echo $podatak['ocena_izgleda']; ?></td>
-                <td><?php echo $podatak['ocena_mpo']; ?></td>
-                <td><?php echo $podatak['napomena']; ?></td>
+                    <td>
+                        <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme']); ?>
+                    </td>
+                    <td>
+                        <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']);?>
+                    </td>
+                    <td>
+                        <?php echo $podatak['razlog']; ?>
+                    </td>
+                    <td><?php echo $podatak['ocena_izlaganja']; ?></td>
+                    <td><?php echo $podatak['ocena_izgleda']; ?></td>
+                    <td><?php echo $podatak['ocena_mpo']; ?></td>
+                    <td><?php echo $podatak['napomena']; ?></td>
 
 
-                <td>
-                    <?php
+                    <td>
+                        <?php
         if ($podatak['opis_naloga1']) {
             echo "<p><strong>Nalog 1: </strong></p>\n<p>" . $podatak['opis_naloga1'] . "</p>\n";
     
@@ -229,9 +229,9 @@ if ($podaci) {?>
             }
         };
     ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga2']) {
             echo "<p><strong>Nalog 2: </strong></p>\n<p>" . $podatak['opis_naloga2'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog2'] . ", ";
@@ -249,9 +249,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga3']) {
             echo "<p><strong>Nalog 3: </strong></p>\n<p>" . $podatak['opis_naloga3'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog3'] . ", ";
@@ -269,9 +269,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga4']) {
             echo "<p><strong>Nalog 4: </strong></p>\n<p>" . $podatak['opis_naloga4'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog4'] . ", ";
@@ -289,9 +289,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga5']) {
             echo "<p><strong>Nalog 5: </strong></p>\n<p>" . $podatak['opis_naloga5'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog5'] . ", ";
@@ -309,9 +309,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga6']) {
             echo "<p><strong>Nalog 6: </strong></p>\n<p>" . $podatak['opis_naloga6'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog6'] . ", ";
@@ -329,9 +329,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga7']) {
             echo "<p><strong>Nalog 7: </strong></p>\n<p>" . $podatak['opis_naloga7'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog7'] . ", ";
@@ -349,9 +349,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga8']) {
             echo "<p><strong>Nalog 8: </strong></p>\n<p>" . $podatak['opis_naloga8'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog8'] . ", ";
@@ -369,9 +369,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga9']) {
             echo "<p><strong>Nalog 9: </strong></p>\n<p>" . $podatak['opis_naloga9'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog9'] . ", ";
@@ -389,9 +389,9 @@ if ($podaci) {?>
             }
         };
         ?>
-                </td>
-                <td>
-                    <?php
+                    </td>
+                    <td>
+                        <?php
         if ($podatak['opis_naloga10']) {
             echo "<p><strong>Nalog 10: </strong></p>\n<p>" . $podatak['opis_naloga10'] . "</p>\n";
             echo "<p>Zaposleni: " . $podatak['ime_zaposlenog10'] . ", ";
@@ -409,21 +409,22 @@ if ($podaci) {?>
             }
         };
       ?>
-                </td>
+                    </td>
 
-            </tr>
-            <?php } } else {
+                </tr>
+                <?php } } else {
      echo "<h4 style='text-align: center'>Nema podataka za traženi upit.</h4>";
 } ?>
 
 
-        </tbody>
-        <tfoot>
-            <tr>
-                <th></th>
-            </tr>
-        </tfoot>
-    </table>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
@@ -437,8 +438,11 @@ if ($podaci) {?>
     var table = $('#tabela-prva').DataTable({
         drawCallback: function() {
             $('.buttons-excel').trigger('click');
-            //   window.close();
 
+        },
+
+        initComplete: function(settings, json) {
+            $("#spinner").css('visibility', 'hidden');
         },
 
         dom: 'Bfrtip',
@@ -447,6 +451,7 @@ if ($podaci) {?>
             download: 'open'
 
         }],
+
 
         customize: function(doc) {
             //pageMargins [left, top, right, bottom]
@@ -473,5 +478,4 @@ if ($podaci) {?>
 
     });
     </script>
-
 </body>
