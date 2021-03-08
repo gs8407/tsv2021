@@ -122,13 +122,13 @@ if ($result_objekat->num_rows > 0) {
             <input type="hidden" class="form-control" id="ip_adresa" name="ip_adresa" value="<?php echo getUserIP(); ?>">
             <div class="row">
                 <div class="col-md-6">
-                    <!-- <div class="form-group">
+                    <div class="form-group">
                         <label>Upload slike</label>
-                        <input id="file" type="file" name="file" />
-                    </div> -->
+                        <input id="file" type="file" name="file[]" multiple />
+                    </div>
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
-                        <select class="form-control" id="objekat" name="objekat" >
+                        <select class="form-control" id="objekat" name="objekat">
                             <option selected disabled>-- Izaberi --</option>
                             <?php
 foreach ($skladista as $skladiste) {
@@ -604,6 +604,12 @@ foreach ($ocena_mpo as $ocena) {
             var submitButton = $("#submit");
             var message = $('#poruka');
             var formData = new FormData($("#poseta")[0]);
+
+            var totalfiles = document.getElementById('file').files.length;
+            for (var index = 0; index < totalfiles; index++) {
+                formData.append("image[]", document.getElementById('file').files[index]);
+            }
+
             // formData.append('image', $('#file')[0].files[0]);
 
             $.ajax({
@@ -619,6 +625,7 @@ foreach ($ocena_mpo as $ocena) {
                     $("input#submit").val("Snima se..").prop("disabled", true);
                 },
                 success: function(data) {
+                    console.log(data);
                     $("input#submit").hide();
                     var response = data;
                     // form.trigger('reset'); // reset form
