@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate credentials
     if (empty($username_err) && empty($password_err)) {
         // Prepare a select statement
-        $sql = "SELECT JAVNA, NAZIV, IME, SIFRA FROM korisnik WHERE NAZIV = ?";
+        $sql = "SELECT JAVNA, NAZIV, IME, SIFRA FROM korisnik WHERE NAZIV = BINARY ?";
 
         if ($stmt = mysqli_prepare($conn, $sql)) {
             // Bind variables to the prepared statement as parameters
