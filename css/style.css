@@ -85,3 +85,20 @@ input[type=checkbox], input[type=radio] {
     height: 20px;
     width: 20px;
 }
+
+.file-wrapper {
+    margin: 15px 0 30px;
+}
+
+.file-wrapper {
+	background: whitesmoke;
+	padding: 25px;
+	border: 1px solid grey;
+	margin: 15px 0;
+}
+
+.file-wrapper img {
+	display: block;
+	max-height: 200px;
+	margin: 15px 0;
+}

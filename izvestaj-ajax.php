@@ -3,6 +3,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 require_once 'config.php';
 date_default_timezone_set('Europe/Belgrade');
 
+
 if (isset($_POST['submit'])) {
     $menadzer = $_POST['menadzer'];
     $datum = $_POST['datum'];
@@ -10,7 +11,10 @@ if (isset($_POST['submit'])) {
     $vreme_zavrsetka = date("H:i:s");
     $ip_adresa = $_POST['ip_adresa'];
     $objekat = $_POST['objekat'];
-    $razlog = implode(",", $_POST['razlog']);
+    if (isset($_POST['razlog'])) {
+        $razlog = implode(",", $_POST['razlog']);
+    }
+
     $napomena = mysqli_real_escape_string($conn, $_POST['napomena']);
 
     if (isset($_POST['ocena_izlaganja'])) {
@@ -31,6 +35,7 @@ if (isset($_POST['submit'])) {
 
     if ($_FILES['file']['tmp_name']) {
         $countfiles = count($_FILES['file']['name']);
+       
         $upload_location = "slike/";
         $putanja_slike = array();
 
@@ -50,7 +55,7 @@ if (isset($_POST['submit'])) {
 
                 // File path
                 $path = $upload_location . $menadzer . "-" . $stamp . "-" . $index . "." . $ext;
-
+        
                 // Upload file
                 if (move_uploaded_file($_FILES['file']['tmp_name'][$index], $path)) {
                     $putanja_slike[] = $path;

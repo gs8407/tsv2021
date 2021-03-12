@@ -8,7 +8,7 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
-require_once 'config.php';
+require_once '../config.php';
 
 // Define variables and initialize with empty values
 $username = $password = "";
@@ -62,12 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["ime"] = $ime;
                             $_SESSION["ovlascenje"] = $ovlascenje;
                             // Redirect user to home page
-                            if($ovlascenje == 4) {
-                                header("location: /izvestaji/");
-                            } else {
-                                header("location: /");
-                            }
-                            
+                            header("location: index.php");
 
                         } else {
                             // Display an error message if password is not valid
@@ -100,7 +95,7 @@ date_default_timezone_set('Europe/Belgrade');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TSV Diskont - Dnevne aktivnosti menadžera</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 
     <style>
     body {
@@ -237,7 +232,7 @@ date_default_timezone_set('Europe/Belgrade');
 
     <div class="container">
         <div class="card card-container">
-            <img src="img/logo.png" class="img-fluid" />
+            <img src="../img/logo.png" class="img-fluid" />
             <p id="profile-name" class="profile-name-card"></p>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">

@@ -1,10 +1,11 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
-// session_start();
-// if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-//     header("location: /login.php");
-//     exit;
-// }
+session_start();
+
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: /izvestaji/login.php");
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -31,12 +32,15 @@ error_reporting(E_ALL & ~E_NOTICE);
 
     <div class="container">
         <img src="/img/logo.png" class="img-fluid mx-auto d-block my-3" alt="">
+        
     </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12 dugmici">
+           
                 <a class="btn btn-success btn-lg" href="total-po-objektima.php">Total po objektima</a>
                 <a class="btn btn-success btn-lg" href="promet-po-objektima.php">Promet po objektima</a>
+                <a href="logout.php" class="btn btn-danger btn-lg">Izloguj se</a>
             </div>
         </div>
 

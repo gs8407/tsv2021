@@ -122,10 +122,7 @@ if ($result_objekat->num_rows > 0) {
             <input type="hidden" class="form-control" id="ip_adresa" name="ip_adresa" value="<?php echo getUserIP(); ?>">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Upload slike</label>
-                        <input id="file" type="file" name="file[]" multiple />
-                    </div>
+
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
                         <select class="form-control" id="objekat" name="objekat">
@@ -555,6 +552,18 @@ foreach ($ocena_mpo as $ocena) {
                     </div>
                 </div>
                 <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Upload slike:</label>
+                        <div id="slike">
+                            <div class="file-wrapper">
+                                <input class="files" type="file" name="file[]" />
+                            </div>
+                        </div>
+
+                        <a href="javascript:void(0)" class="dodaj-slike btn btn-info">Dodaj još slika</a>
+                    </div>
+                </div>
+                <div class="col-md-12">
                     <a href="logout.php" class="btn btn-danger btn-lg mt-4">Odustani</a>
                     <input class="btn btn-success float-right btn-lg mt-4" type="submit" value="Završi" id="submit" name="submit">
                 </div>
@@ -587,8 +596,11 @@ foreach ($ocena_mpo as $ocena) {
                 }
             },
             "razlog[]": {
-                required: true,
-                minlength: 1
+                // required: true,
+                required: function(element) {
+                    return $('#objekat').find('option:selected').val() != 1001;
+                }
+                // minlength: 1
             }
         }, // end rules
         messages: {
@@ -605,12 +617,14 @@ foreach ($ocena_mpo as $ocena) {
             var message = $('#poruka');
             var formData = new FormData($("#poseta")[0]);
 
-            var totalfiles = document.getElementById('file').files.length;
-            for (var index = 0; index < totalfiles; index++) {
-                formData.append("image[]", document.getElementById('file').files[index]);
-            }
+            var totalfiles = document.getElementsByClassName('files').length;
 
-            // formData.append('image', $('#file')[0].files[0]);
+            for (var index = 0; index < totalfiles; index++) {
+                if (document.getElementsByClassName('files')[index].files) {
+                    console.log(document.getElementsByClassName('files')[index].files[0]);
+                    formData.append("image[]", document.getElementsByClassName('files')[index].files[0]);
+                }
+            }
 
             $.ajax({
                 url: 'izvestaj-ajax.php',
@@ -640,6 +654,43 @@ foreach ($ocena_mpo as $ocena) {
         } // end submit handler
 
     }); //end validate
+    </script>
+
+    <script>
+    $(document).ready(function() {
+        $(".dodaj-slike").on('click', function() {
+            $("#slike").append('<div class="file-wrapper"><input class="files" type="file" name="file[]" /></div>');
+        });
+    });
+
+    function readURL(input, parentContainer) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                parentContainer.append('<img src="' + e.target.result + '"/> <a href="" class="odbaci-sliku btn btn-sm btn-danger">Odbaci sliku</a>')
+            }
+            reader.readAsDataURL(input.files[0]); // convert to base64 string
+        }
+    }
+
+
+    $(document).on('change', '.files', function () {
+        $(this).parent().find("img").remove();
+        var parentContainer = $(this).parent();
+        readURL(this, parentContainer);
+    });
+
+    // Check element index
+    $('.carousel-indicators li').click(function() {
+        alert($('.carousel-indicators li').index(this));
+    });
+
+    $(document).on('click', '.odbaci-sliku', function (e) {
+        e.preventDefault();
+        
+        console.log( $(this).parent().remove());
+    });
     </script>
 
     <div class="modal" tabindex="-1" role="dialog" id="uspesno">

@@ -1,18 +1,27 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE);
-// session_start();
-// if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
-//     header("location: /login.php");
-//     exit;
-// }
+session_start();
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: /izvestaji/login.php");
+    exit;
+}
 
 require_once '../config.php';
-
-$sql_menadzer = "SELECT JAVNASIFRA, NAZIV, SIFRA FROM putnik";
-$result = $conn->query($sql_menadzer);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $menadzeri[] = $row;
+if ($_SESSION["ovlascenje"] == 4) {
+    $sql_menadzer = "SELECT JAVNASIFRA, NAZIV, SIFRA FROM putnik";
+    $result = $conn->query($sql_menadzer);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $menadzeri[] = $row;
+        }
+    }
+} else {
+    $sql_menadzer = "SELECT JAVNASIFRA, NAZIV, SIFRA FROM putnik WHERE JAVNASIFRA = '$_SESSION[javna]'";
+    $result = $conn->query($sql_menadzer);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $menadzer = $row;
+        }
     }
 }
 
@@ -24,13 +33,24 @@ if ($result_razlog->num_rows > 0) {
     }
 }
 
-$sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla ORDER BY SIFRA";
-$result_objekat = $conn->query($sql_objekat);
-if ($result_objekat->num_rows > 0) {
-    while ($row = $result_objekat->fetch_assoc()) {
-        $skladista[] = $row;
+if ($_SESSION["ovlascenje"] == 4) {
+    $sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla ORDER BY SIFRA";
+    $result_objekat = $conn->query($sql_objekat);
+    if ($result_objekat->num_rows > 0) {
+        while ($row = $result_objekat->fetch_assoc()) {
+            $skladista[] = $row;
+        }
+    }
+} else {
+    $sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla WHERE SIFRAMENADZERA = '$menadzer[SIFRA]' OR WILDCARD = 1 ORDER BY SIFRA";
+    $result_objekat = $conn->query($sql_objekat);
+    if ($result_objekat->num_rows > 0) {
+        while ($row = $result_objekat->fetch_assoc()) {
+            $skladista[] = $row;
+        }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -95,6 +115,7 @@ if ($result_objekat->num_rows > 0) {
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Menadžer:</label>
+                        <?php if ($_SESSION["ovlascenje"] == 4) {?>
                         <select class="form-control" id="menadzer" name="menadzer">
                             <option value="999999999">-- Sve --</option>
                             <?php
@@ -103,11 +124,15 @@ foreach ($menadzeri as $menadzer) {
                             <option value="<?php echo $menadzer['JAVNASIFRA']; ?>" data-menadzer="<?php echo $menadzer['SIFRA']; ?>"><?php echo $menadzer['NAZIV'] ?></option>
                             <?php
 }
-?>
+    ?>
                         </select>
                         <label for="razlog[]" class="error" style="display: none">Izaberite</label>
+                        <?php } else {?>
+                           <div><?php echo $_SESSION["ime"]; ?><input type="text" value="<?php echo $_SESSION["javna"]; ?>" name="menadzer" hidden></div>
+                        <?php }?>
                     </div>
                 </div>
+
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="objekat">Objekat:</label>
@@ -177,7 +202,8 @@ foreach ($razlozi as $razlog) {
                 </div>
 
                 <div class="col-md-12">
-                    <!-- <a href="logout.php" class="btn btn-danger btn-lg mt-4">Odustani</a> -->
+                    <a href="logout.php" class="btn btn-danger btn-lg mt-4">Izloguj se</a>
+                    <a href="/izvestaji/" class="btn btn-info btn-lg mt-4">Nazad na izbor</a>
                     <input class="btn btn-success float-right btn-lg mt-4  mb-5" type="submit" value="Prikaži" id="submit" name="submit">
                 </div>
             </div>
@@ -294,7 +320,8 @@ foreach ($razlozi as $razlog) {
             }
         });
 
-        $("#menadzer").change(function() {
+
+    $("#menadzer").change(function() {
             var data = {
                 menadzer: $('#menadzer').find('option:selected').data('menadzer'),
             }
@@ -307,8 +334,6 @@ foreach ($razlozi as $razlog) {
                 }
             });
         });
-
-
 
 
         $("#izvestaj").submit(function(e) {
