@@ -125,7 +125,8 @@ if (isset($_POST['submit'])) {
     if (mysqli_query($conn, $sql)) {
         echo "Izveštaj je uspešno upisan u bazu podataka.";
     } else {
-        echo "Greška: " . $sql . "<br>" . mysqli_error($conn);
+        echo "Greška: " . mysqli_error($conn);
+        error_log(mysqli_error($conn));
         // $msg = "Greška: " . $sql . "<br>" . mysqli_error($conn);;
         // $msg = wordwrap($msg, 70);
         // mail("gs8407@gmail.com", "TSV aplikacija - Greška pri upisu u bazu", $msg);
