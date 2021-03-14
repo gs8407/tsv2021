@@ -52,7 +52,6 @@ if ($upiti) {
     $upiti = "WHERE " . $upiti;
 }
 
-
 $sql_ukupno = "SELECT COUNT(id) AS ukupno FROM izvestaji $upiti";
 $result = $conn->query($sql_ukupno);
 if ($result->num_rows > 0) {
@@ -60,7 +59,6 @@ if ($result->num_rows > 0) {
         $ukupno_naloga = $row['ukupno'];
     }
 }
-
 
 $podaci = array();
 
@@ -79,7 +77,6 @@ ON menadzer = korisnik.JAVNA
 LEFT JOIN skla
 ON skla.SIFRA = objekat
 $upiti
-
 GROUP BY objekat, menadzer, NAZIV";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {

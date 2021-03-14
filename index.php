@@ -129,7 +129,7 @@ if ($result_objekat->num_rows > 0) {
                             <option selected disabled>-- Izaberi --</option>
                             <?php
 foreach ($skladista as $skladiste) {
-    echo "<option value='" . $skladiste["id"] . "' data-wildcard=" . $skladiste['WILDCARD'] .">" . $skladiste["NAZIV"] . "</option>";
+    echo "<option value='" . $skladiste["id"] . "' data-wildcard=" . $skladiste['WILDCARD'] . ">" . $skladiste["NAZIV"] . "</option>";
 }
 ?>
                         </select>
@@ -570,7 +570,14 @@ foreach ($ocena_mpo as $ocena) {
             </div>
         </form>
     </div>
-
+    <div id='progress' style="display: none">
+        <div class="wrapper">
+            <p class="text-center mb-3">Slike se uploaduju, molimo ne zatvarajte pretraživač i ne prekidajte internet konekciju. Vreme postavljanja slika zavisi od njihove veličine i brzine internet konekcije.</p>
+            <div class="progress-bar">
+                <span class="progress-bar-fill"></span>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
@@ -638,13 +645,47 @@ foreach ($ocena_mpo as $ocena) {
                     submitButton.html('Snima se....'); // change submit button text
                     $("input#submit").val("Snima se..").prop("disabled", true);
                 },
+                xhr: function() {
+                    var jqXHR = null;
+                    if (window.ActiveXObject) {
+                        jqXHR = new window.ActiveXObject("Microsoft.XMLHTTP");
+                    } else {
+                        jqXHR = new window.XMLHttpRequest();
+                    }
+
+                    //Upload progress
+                    jqXHR.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+
+                            var percentComplete = Math.round((evt.loaded * 100) / evt.total);
+                            //Do something with upload progress
+                            if (percentComplete < 100) {
+                                $('#progress').addClass("active");
+                            }
+                            console.log('Uploaded percent', percentComplete);
+                            // $('#progress').text(percentComplete);
+                            $(".progress-bar-fill").css('width', percentComplete + '%')
+                        }
+                    }, false);
+
+                    return jqXHR;
+                },
                 success: function(data) {
+                    $('#progress').remove();
                     console.log(data);
                     $("input#submit").hide();
                     var response = data;
                     // form.trigger('reset'); // reset form
                     message.html(data);
                     $('#uspesno').modal('show');
+                    $('#uspesno').on('hidden.bs.modal', function(e) {
+                        $('#uspesno').modal({
+                            show: 'true',
+                            backdrop: 'static',
+                            keyboard: false
+                        })
+                    })
+
                 },
                 error: function(e) {
                     console.log(e)
@@ -668,14 +709,13 @@ foreach ($ocena_mpo as $ocena) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function(e) {
-                parentContainer.append('<img src="' + e.target.result + '"/> <a href="" class="odbaci-sliku btn btn-sm btn-danger">Odbaci sliku</a>')
+                parentContainer.append('<img class="img-fluid" src="' + e.target.result + '"/> <a href="" class="odbaci-sliku btn btn-sm btn-danger">Odbaci sliku</a>')
             }
             reader.readAsDataURL(input.files[0]); // convert to base64 string
         }
     }
 
-
-    $(document).on('change', '.files', function () {
+    $(document).on('change', '.files', function() {
         $(this).parent().find("img").remove();
         var parentContainer = $(this).parent();
         readURL(this, parentContainer);
@@ -686,10 +726,10 @@ foreach ($ocena_mpo as $ocena) {
         alert($('.carousel-indicators li').index(this));
     });
 
-    $(document).on('click', '.odbaci-sliku', function (e) {
+    $(document).on('click', '.odbaci-sliku', function(e) {
         e.preventDefault();
-        
-        console.log( $(this).parent().remove());
+
+        console.log($(this).parent().remove());
     });
     </script>
 
