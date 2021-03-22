@@ -603,6 +603,11 @@ foreach ($ocena_mpo as $ocena) {
                     return $('#objekat').find('option:selected').data('wildcard') != 1;
                 }
             },
+            napomena: {
+                required: function(element) {
+                    return $('#objekat').find('option:selected').data('wildcard') == 1;
+                }
+            },
             "razlog[]": {
                 // required: true,
                 required: function(element) {
@@ -617,6 +622,7 @@ foreach ($ocena_mpo as $ocena) {
             ocena_izlaganja: "Izaberite",
             ocena_izgleda: "Izaberite",
             ocena_mpo: "Izaberite",
+            napomena: "Ovo polje je obavezno",
 
         }, // end messages
 
