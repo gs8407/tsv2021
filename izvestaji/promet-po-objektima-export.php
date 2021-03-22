@@ -10,7 +10,7 @@
 </head>
 
 <body>
-<div id="spinner"><img src="/img/spinner.gif" alt=""></div>
+    <div id="spinner"><img src="/img/spinner.gif" alt=""></div>
     <?php
 // header('Content-Type: application/json; charset=utf-8');
 
@@ -136,6 +136,7 @@ opis_naloga10,
 ime_zaposlenog10,
 saglasan10,
 funkcija10,
+putanja_slike,
 skla.NAZIV
 FROM izvestaji
 LEFT JOIN korisnik
@@ -179,13 +180,12 @@ if ($podaci) {?>
             <tbody>
 
                 <?php foreach ($podaci as $podatak) {
-        foreach ($razlozi as $razlog) {
+    foreach ($razlozi as $razlog) {
         $find = $razlog['id'];
         $replace = $razlog['naziv'];
         $arr = $podatak['razlog'];
         $podatak['razlog'] = str_replace($find, $replace, $arr);
-    }
-    ?>
+    } ?>
                 <tr>
                     <td>
                         <?php echo $podatak['objekat']; ?> - <?php echo $podatak['NAZIV']; ?>
@@ -198,15 +198,19 @@ if ($podaci) {?>
                         <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme']); ?>
                     </td>
                     <td>
-                        <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']);?>
+                        <?php echo date("d/m/Y", strtotime($podatak['datum'])); ?> <?php echo str_replace(".000000", "", $podatak['vreme_zavrsetka']); ?>
                     </td>
                     <td>
                         <?php echo $podatak['razlog']; ?>
                     </td>
-                    <td><?php echo $podatak['ocena_izlaganja']; ?></td>
-                    <td><?php echo $podatak['ocena_izgleda']; ?></td>
-                    <td><?php echo $podatak['ocena_mpo']; ?></td>
-                    <td><?php echo $podatak['napomena']; ?></td>
+                    <td><?php echo $podatak['ocena_izlaganja']; ?>
+                    </td>
+                    <td><?php echo $podatak['ocena_izgleda']; ?>
+                    </td>
+                    <td><?php echo $podatak['ocena_mpo']; ?>
+                    </td>
+                    <td><?php echo $podatak['napomena']; ?>
+                    </td>
 
 
                     <td>
@@ -227,8 +231,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-    ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -247,8 +250,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -267,8 +269,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -287,8 +288,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -307,8 +307,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -327,8 +326,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -347,8 +345,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -367,8 +364,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -387,8 +383,7 @@ if ($podaci) {?>
                         break;
                 }
             }
-        };
-        ?>
+        }; ?>
                     </td>
                     <td>
                         <?php
@@ -408,13 +403,22 @@ if ($podaci) {?>
                 }
             }
         };
-      ?>
+
+    $putanja_slike = explode(", ", $podatak['putanja_slike']);
+    if ($putanja_slike[0]) {
+        $i = 1;
+        foreach ($putanja_slike as $slika) {
+            echo $_SERVER['SERVER_NAME']."/".$slika . " ";
+            $i++;
+        }
+    } ?>
                     </td>
 
                 </tr>
-                <?php } } else {
-     echo "<h4 style='text-align: center'>Nema podataka za traženi upit.</h4>";
-} ?>
+                <?php
+} } else {
+        echo "<h4 style='text-align: center'>Nema podataka za traženi upit.</h4>";
+    } ?>
 
 
             </tbody>
@@ -435,47 +439,47 @@ if ($podaci) {?>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
     <script>
-    var table = $('#tabela-prva').DataTable({
-        drawCallback: function() {
-            $('.buttons-excel').trigger('click');
+        var table = $('#tabela-prva').DataTable({
+            drawCallback: function() {
+                $('.buttons-excel').trigger('click');
 
-        },
+            },
 
-        initComplete: function(settings, json) {
-            $("#spinner").css('visibility', 'hidden');
-        },
+            initComplete: function(settings, json) {
+                $("#spinner").css('visibility', 'hidden');
+            },
 
-        dom: 'Bfrtip',
-        buttons: [{
-            extend: 'excelHtml5',
-            download: 'open'
+            dom: 'Bfrtip',
+            buttons: [{
+                extend: 'excelHtml5',
+                download: 'open'
 
-        }],
+            }],
 
 
-        customize: function(doc) {
-            //pageMargins [left, top, right, bottom]
-            doc.pageMargins = [50, 20, 50, 20];
-        },
+            customize: function(doc) {
+                //pageMargins [left, top, right, bottom]
+                doc.pageMargins = [50, 20, 50, 20];
+            },
 
-        "language": {
-            "sProcessing": "Procesiranje u toku...",
-            "sLengthMenu": "Prikaži _MENU_ elemenata",
-            "sZeroRecords": "Nije pronađen nijedan rezultat",
-            "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-            "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-            "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-            "sInfoPostFix": "",
-            "sSearch": "Pretraga:",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "Početna",
-                "sPrevious": "Prethodna",
-                "sNext": "Sledeća",
-                "sLast": "Poslednja"
+            "language": {
+                "sProcessing": "Procesiranje u toku...",
+                "sLengthMenu": "Prikaži _MENU_ elemenata",
+                "sZeroRecords": "Nije pronađen nijedan rezultat",
+                "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
+                "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
+                "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
+                "sInfoPostFix": "",
+                "sSearch": "Pretraga:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Početna",
+                    "sPrevious": "Prethodna",
+                    "sNext": "Sledeća",
+                    "sLast": "Poslednja"
+                }
             }
-        }
 
-    });
+        });
     </script>
 </body>

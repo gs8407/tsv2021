@@ -122,6 +122,7 @@ opis_naloga10,
 ime_zaposlenog10,
 saglasan10,
 funkcija10,
+putanja_slike,
 skla.NAZIV
 FROM izvestaji
 LEFT JOIN korisnik
@@ -336,6 +337,19 @@ if ($podaci) {?>
         }
     };
   ?>
+
+<?php
+$putanja_slike = explode(", ", $podatak['putanja_slike']);
+if($putanja_slike[0]) {
+    $i = 1;
+    foreach ($putanja_slike as $slika) {
+        echo "<a class='d-block mb-1' target='_blank' href='/" . $slika . "'>Slika " . $i . "</a>";
+        $i++;
+    }
+}
+?>
+<img src="" alt="">
+      
             </td>
         </tr>
 <?php } } else {

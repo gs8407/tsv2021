@@ -211,14 +211,14 @@ foreach ($razlozi as $razlog) {
                                 <label for="ime_zaposlenog1">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog1" name="ime_zaposlenog1">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan1">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan1" name="saglasan1">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija1">Funkcija:</label>
                                 <select class="form-control" id="funkcija1" name="funkcija1">
@@ -242,14 +242,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog2">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog2" name="ime_zaposlenog2">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan2">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan2" name="saglasan2">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija2">Funkcija:</label>
                                 <select class="form-control" id="funkcija2" name="funkcija2">
@@ -273,14 +273,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog3">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog3" name="ime_zaposlenog3">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan3">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan3" name="saglasan3">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija3">Funkcija:</label>
                                 <select class="form-control" id="funkcija3" name="funkcija3">
@@ -304,14 +304,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog4">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog4" name="ime_zaposlenog4">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan4">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan4" name="saglasan4">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija4">Funkcija:</label>
                                 <select class="form-control" id="funkcija4" name="funkcija4">
@@ -335,14 +335,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog5">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog5" name="ime_zaposlenog5">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan5">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan5" name="saglasan5">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija5">Funkcija:</label>
                                 <select class="form-control" id="funkcija5" name="funkcija5">
@@ -366,14 +366,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog6">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog6" name="ime_zaposlenog6">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan6">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan6" name="saglasan6">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija6">Funkcija:</label>
                                 <select class="form-control" id="funkcija6" name="funkcija6">
@@ -397,14 +397,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog7">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog7" name="ime_zaposlenog7">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan7">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan7" name="saglasan7">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija7">Funkcija:</label>
                                 <select class="form-control" id="funkcija7" name="funkcija7">
@@ -428,14 +428,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog8">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog8" name="ime_zaposlenog8">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan8">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan8" name="saglasan8">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija8">Funkcija:</label>
                                 <select class="form-control" id="funkcija8" name="funkcija8">
@@ -459,14 +459,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog9">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog9" name="ime_zaposlenog9">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan9">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan9" name="saglasan9">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija10">Funkcija:</label>
                                 <select class="form-control" id="funkcija9" name="funkcija9">
@@ -490,14 +490,14 @@ foreach ($funkcije as $funkcija) {
                                 <label for="ime_zaposlenog10">Ime i prezime zaposlenog:</label>
                                 <input type="text" class="form-control" id="ime_zaposlenog10" name="ime_zaposlenog10">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="saglasan10">Zaposleni saglasna sa nalogom:</label>
                                 <select class="form-control" id="saglasan10" name="saglasan10">
                                     <option disabled selected>-- Izaberi --</option>
                                     <option value="da">DA</option>
                                     <option value="ne">NE</option>
                                 </select>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="funkcija10">Funkcija:</label>
                                 <select class="form-control" id="funkcija10" name="funkcija10">
@@ -576,6 +576,7 @@ foreach ($ocena_mpo as $ocena) {
             <div class="progress-bar">
                 <span class="progress-bar-fill"></span>
             </div>
+            <p class="text-center mt-2"><span class="percent"></span></p>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -662,6 +663,7 @@ foreach ($ocena_mpo as $ocena) {
                             if (percentComplete < 100) {
                                 $('#progress').addClass("active");
                             }
+                            $(".percent").text(percentComplete + "%")
                             console.log('Uploaded percent', percentComplete);
                             // $('#progress').text(percentComplete);
                             $(".progress-bar-fill").css('width', percentComplete + '%')
