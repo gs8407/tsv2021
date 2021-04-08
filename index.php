@@ -50,6 +50,13 @@ function getUserIP()
     <title>TSV Diskont - Dnevne aktivnosti menadžera</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PDFBWPX');</script>
+<!-- End Google Tag Manager -->
 </head>
 
 <body>
@@ -556,7 +563,7 @@ foreach ($ocena_mpo as $ocena) {
                         <label>Upload slike:</label>
                         <div id="slike">
                             <div class="file-wrapper">
-                                <input class="files" type="file" name="file[]" />
+                                <input class="files" type="file" name="file[]" accept="image/*" />
                             </div>
                         </div>
 
@@ -708,7 +715,7 @@ foreach ($ocena_mpo as $ocena) {
     <script>
     $(document).ready(function() {
         $(".dodaj-slike").on('click', function() {
-            $("#slike").append('<div class="file-wrapper"><input class="files" type="file" name="file[]" /></div>');
+            $("#slike").append('<div class="file-wrapper"><input class="files" type="file" name="file[]" accept="image/*" /></div>');
         });
     });
 
