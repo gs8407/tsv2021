@@ -11,6 +11,7 @@ require_once 'config.php';
 
 include 'backup.php';
 
+
 $mpo_query = "SELECT SIFRA, NAZIV FROM putnik WHERE JAVNASIFRA = '$_SESSION[javna]'";
 $result = $conn->query($mpo_query);
 if ($result->num_rows > 0) {

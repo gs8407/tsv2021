@@ -33,7 +33,7 @@ if (isset($_POST['submit'])) {
 
     if ($_FILES['file']['tmp_name']) {
         $countfiles = count($_FILES['file']['name']);
-       
+
         $upload_location = "slike/";
         $putanja_slike = array();
 
@@ -53,7 +53,7 @@ if (isset($_POST['submit'])) {
 
                 // File path
                 $path = $upload_location . $menadzer . "-" . $stamp . "-" . $index . "." . $ext;
-        
+
                 // Upload file
                 if (move_uploaded_file($_FILES['file']['tmp_name'][$index], $path)) {
                     $putanja_slike[] = $path;
@@ -117,8 +117,10 @@ if (isset($_POST['submit'])) {
 
     $current_time = date("H:i:s");
 
-    $sql = "INSERT INTO izvestaji (menadzer, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, putanja_slike, opis_naloga1, ime_zaposlenog1, funkcija1, opis_naloga2, ime_zaposlenog2, funkcija2, opis_naloga3, ime_zaposlenog3, funkcija3, opis_naloga4, ime_zaposlenog4, funkcija4, opis_naloga5, ime_zaposlenog5, funkcija5, opis_naloga6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, funkcija7, opis_naloga8, ime_zaposlenog8, funkcija8, opis_naloga9, ime_zaposlenog9, funkcija9, opis_naloga10, ime_zaposlenog10, funkcija10)
-    VALUES ('$menadzer', '$datum', '$vreme', '$vreme_zavrsetka', '$ip_adresa', '$objekat', '$razlog', '$napomena', '$ocena_izlaganja',' $ocena_izgleda', '$ocena_mpo', '$putanja_slike', '$opis_naloga1', '$ime_zaposlenog1', '$funkcija1', '$opis_naloga2', '$ime_zaposlenog2', '$funkcija2', '$opis_naloga3', '$ime_zaposlenog3', '$funkcija3', '$opis_naloga4', '$ime_zaposlenog4', '$funkcija4', '$opis_naloga5', '$ime_zaposlenog5', '$funkcija5', '$opis_naloga6', '$ime_zaposlenog6', '$funkcija6', '$opis_naloga7', '$ime_zaposlenog7', '$funkcija7', '$opis_naloga8', '$ime_zaposlenog8', '$funkcija8', '$opis_naloga9', '$ime_zaposlenog9', '$funkcija9', '$opis_naloga10', '$ime_zaposlenog10', '$funkcija10');";
+    $uredjaj = $conn -> real_escape_string($_SERVER['HTTP_USER_AGENT']);
+
+    $sql = "INSERT INTO izvestaji (menadzer, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, putanja_slike, opis_naloga1, ime_zaposlenog1, funkcija1, opis_naloga2, ime_zaposlenog2, funkcija2, opis_naloga3, ime_zaposlenog3, funkcija3, opis_naloga4, ime_zaposlenog4, funkcija4, opis_naloga5, ime_zaposlenog5, funkcija5, opis_naloga6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, funkcija7, opis_naloga8, ime_zaposlenog8, funkcija8, opis_naloga9, ime_zaposlenog9, funkcija9, opis_naloga10, ime_zaposlenog10, funkcija10, uredjaj)
+    VALUES ('$menadzer', '$datum', '$vreme', '$vreme_zavrsetka', '$ip_adresa', '$objekat', '$razlog', '$napomena', '$ocena_izlaganja',' $ocena_izgleda', '$ocena_mpo', '$putanja_slike', '$opis_naloga1', '$ime_zaposlenog1', '$funkcija1', '$opis_naloga2', '$ime_zaposlenog2', '$funkcija2', '$opis_naloga3', '$ime_zaposlenog3', '$funkcija3', '$opis_naloga4', '$ime_zaposlenog4', '$funkcija4', '$opis_naloga5', '$ime_zaposlenog5', '$funkcija5', '$opis_naloga6', '$ime_zaposlenog6', '$funkcija6', '$opis_naloga7', '$ime_zaposlenog7', '$funkcija7', '$opis_naloga8', '$ime_zaposlenog8', '$funkcija8', '$opis_naloga9', '$ime_zaposlenog9', '$funkcija9', '$opis_naloga10', '$ime_zaposlenog10', '$funkcija10', '$uredjaj')";
 
     if (mysqli_query($conn, $sql)) {
         echo "Izveštaj je uspešno upisan u bazu podataka.";
@@ -135,57 +137,58 @@ if (isset($_POST['submit'])) {
 
 $myfile = fopen("protected/raw.txt", "a") or die("Unable to open file!");
 $txt = $menadzer . " | "
- . $datum . " | "
- . $vreme . " | "
- . $vreme_zavrsetka . " | "
- . $ip_adresa . " | "
- . $objekat . " | "
- . $razlog . " | "
- . $napomena . " | "
- . $ocena_izlaganja . " | "
- . $ocena_izgleda . " | "
- . $ocena_mpo . " | "
- . $putanja_slike . " | "
- . $opis_naloga1 . " | "
- . $ime_zaposlenog1 . " | "
+    . $datum . " | "
+    . $vreme . " | "
+    . $vreme_zavrsetka . " | "
+    . $ip_adresa . " | "
+    . $objekat . " | "
+    . $razlog . " | "
+    . $napomena . " | "
+    . $ocena_izlaganja . " | "
+    . $ocena_izgleda . " | "
+    . $ocena_mpo . " | "
+    . $putanja_slike . " | "
+    . $opis_naloga1 . " | "
+    . $ime_zaposlenog1 . " | "
 //  . $saglasan1 . " | "
- . $funkcija1 . " | "
- . $opis_naloga2 . " | "
- . $ime_zaposlenog2 . " | "
+    . $funkcija1 . " | "
+    . $opis_naloga2 . " | "
+    . $ime_zaposlenog2 . " | "
 //  . $saglasan2 . " | "
- . $funkcija2 . " | "
- . $opis_naloga3 . " | "
- . $ime_zaposlenog3 . " | "
+    . $funkcija2 . " | "
+    . $opis_naloga3 . " | "
+    . $ime_zaposlenog3 . " | "
 //  . $saglasan3 . " | "
- . $funkcija3 . " | "
- . $opis_naloga4 . " | "
- . $ime_zaposlenog4 . " | "
+    . $funkcija3 . " | "
+    . $opis_naloga4 . " | "
+    . $ime_zaposlenog4 . " | "
 //  . $saglasan4 . " | "
- . $funkcija4 . " | "
- . $opis_naloga5 . " | "
- . $ime_zaposlenog5 . " | "
+    . $funkcija4 . " | "
+    . $opis_naloga5 . " | "
+    . $ime_zaposlenog5 . " | "
 //  . $saglasan5 . " | "
- . $funkcija5 . " | "
- . $opis_naloga6 . " | "
- . $ime_zaposlenog6 . " | "
+    . $funkcija5 . " | "
+    . $opis_naloga6 . " | "
+    . $ime_zaposlenog6 . " | "
 //  . $saglasan6 . " | "
- . $funkcija6 . " | "
- . $opis_naloga7 . " | "
- . $ime_zaposlenog7 . " | "
+    . $funkcija6 . " | "
+    . $opis_naloga7 . " | "
+    . $ime_zaposlenog7 . " | "
 //  . $saglasan7 . " | "
- . $funkcija7 . " | "
- . $opis_naloga8 . " | "
- . $ime_zaposlenog8 . " | "
+    . $funkcija7 . " | "
+    . $opis_naloga8 . " | "
+    . $ime_zaposlenog8 . " | "
 //  . $saglasan8 . " | "
- . $funkcija8 . " | "
- . $opis_naloga9 . " | "
- . $ime_zaposlenog9 . " | "
+    . $funkcija8 . " | "
+    . $opis_naloga9 . " | "
+    . $ime_zaposlenog9 . " | "
 //  . $saglasan9 . " | "
- . $funkcija9 . " | "
- . $opis_naloga10 . " | "
- . $ime_zaposlenog10 . " | "
+    . $funkcija9 . " | "
+    . $opis_naloga10 . " | "
+    . $ime_zaposlenog10 . " | "
 //  . $saglasan10 . " | "
- . $funkcija10 . "\n";
+    . $funkcija10  . " | "
+    . $uredjaj . "\n";
 
 fwrite($myfile, $txt);
 fclose($myfile);
