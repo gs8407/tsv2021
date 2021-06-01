@@ -89,7 +89,7 @@ if ($result->num_rows > 0) {
     }
 }
 
-$sql_razlog = "SELECT id, naziv FROM razlog_posete";
+$sql_razlog = "SELECT id, naziv FROM razlog_posete WHERE status = 1";
 $result_razlog = $conn->query($sql_razlog);
 if ($result_razlog->num_rows > 0) {
     while ($row = $result_razlog->fetch_assoc()) {
