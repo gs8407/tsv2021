@@ -8,11 +8,19 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 require_once '../config.php';
 if ($_SESSION["ovlascenje"] == 4) {
-    $sql_menadzer = "SELECT JAVNASIFRA, NAZIV, SIFRA FROM putnik";
+    $sql_menadzer = "SELECT JAVNASIFRA, putnik.NAZIV, putnik.SIFRA FROM putnik LEFT JOIN korisnik ON JAVNASIFRA = korisnik.JAVNA WHERE korisnik.OVLASCENJE = 2";
     $result = $conn->query($sql_menadzer);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $menadzeri[] = $row;
+        }
+    }
+
+    $sql_zamenik = "SELECT JAVNASIFRA, putnik.NAZIV, putnik.SIFRA FROM putnik LEFT JOIN korisnik ON JAVNASIFRA = korisnik.JAVNA WHERE korisnik.OVLASCENJE = 1";
+    $result = $conn->query($sql_zamenik);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $zamenici[] = $row;
         }
     }
 } else {
@@ -35,6 +43,14 @@ if ($result_razlog->num_rows > 0) {
 
 if ($_SESSION["ovlascenje"] == 4) {
     $sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla ORDER BY SIFRA";
+    $result_objekat = $conn->query($sql_objekat);
+    if ($result_objekat->num_rows > 0) {
+        while ($row = $result_objekat->fetch_assoc()) {
+            $skladista[] = $row;
+        }
+    }
+} else if ($_SESSION["ovlascenje"] == 1) {
+    $sql_objekat = "SELECT id, NAZIV, SIFRA FROM skla WHERE FIND_IN_SET($menadzer[SIFRA],SIFRAZAMENIKA) OR WILDCARD = 1 ORDER BY SIFRA";
     $result_objekat = $conn->query($sql_objekat);
     if ($result_objekat->num_rows > 0) {
         while ($row = $result_objekat->fetch_assoc()) {
@@ -66,40 +82,41 @@ if ($_SESSION["ovlascenje"] == 4) {
 
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <style>
-    button.dt-button {
-        background: transparent;
-        border: 2px solid #ff7713;
-        border-radius: 5px;
-        font-size: 16px;
-        padding: 5px 15px;
-    }
+        button.dt-button {
+            background: transparent;
+            border: 2px solid #ff7713;
+            border-radius: 5px;
+            font-size: 16px;
+            padding: 5px 15px;
+        }
 
-    button.dt-button:hover {
-        background: #ff7713;
-        color: #fff;
-    }
+        button.dt-button:hover {
+            background: #ff7713;
+            color: #fff;
+        }
 
-    .ocene-container input {
-        max-width: 60px;
-    }
+        .ocene-container input {
+            max-width: 60px;
+        }
 
-    .ocene-container label:first-child input {
-        margin-right: 15px
-    }
+        .ocene-container label:first-child input {
+            margin-right: 15px
+        }
 
-    .ocene-container label {
-        margin-top: 0;
-    }
+        .ocene-container label {
+            margin-top: 0;
+        }
 
-    th.sorting_asc {
-        display: none;
-    }
-    iframe {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto;
-        display: block;
-    }
+        th.sorting_asc {
+            display: none;
+        }
+
+        iframe {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            display: block;
+        }
     </style>
 </head>
 
@@ -115,23 +132,47 @@ if ($_SESSION["ovlascenje"] == 4) {
                 <div class="col-md-4">
                     <div class="form-group">
                         <label>Menadžer:</label>
-                        <?php if ($_SESSION["ovlascenje"] == 4) {?>
-                        <select class="form-control" id="menadzer" name="menadzer">
-                            <option value="999999999">-- Sve --</option>
-                            <?php
-foreach ($menadzeri as $menadzer) {
-    ?>
-                            <option value="<?php echo $menadzer['JAVNASIFRA']; ?>" data-menadzer="<?php echo $menadzer['SIFRA']; ?>"><?php echo $menadzer['NAZIV'] ?></option>
-                            <?php
-}
-    ?>
-                        </select>
-                        <label for="razlog[]" class="error" style="display: none">Izaberite</label>
-                        <?php } else {?>
-                           <div><?php echo $_SESSION["ime"]; ?><input type="text" value="<?php echo $_SESSION["javna"]; ?>" name="menadzer" hidden></div>
-                        <?php }?>
+                        <input type="hidden" name="ovlascenje" value="<?php echo $_SESSION["ovlascenje"]; ?>">
+                        <?php if ($_SESSION["ovlascenje"] == 4) { ?>
+                            <select class="form-control" id="menadzer" name="menadzer">
+                                <option value="999999999">-- Sve --</option>
+                                <?php
+                                foreach ($menadzeri as $menadzer) {
+                                ?>
+                                    <option value="<?php echo $menadzer['JAVNASIFRA']; ?>" data-menadzer="<?php echo $menadzer['SIFRA']; ?>"><?php echo $menadzer['NAZIV'] ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <label for="razlog[]" class="error" style="display: none">Izaberite</label>
+                        <?php } else { ?>
+                            <div><?php echo $_SESSION["ime"]; ?><input type="text" value="<?php echo $_SESSION["javna"]; ?>" name="menadzer" hidden></div>
+                        <?php } ?>
                     </div>
                 </div>
+                <?php if ($_SESSION["ovlascenje"] == 4) { ?>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Zamenik:</label>
+                        <input type="hidden" name="ovlascenje" value="<?php echo $_SESSION["ovlascenje"]; ?>">
+                        <?php if ($_SESSION["ovlascenje"] == 4) { ?>
+                            <select class="form-control" id="zamenik" name="zamenik">
+                                <option value="999999999">-- Sve --</option>
+                                <?php
+                                foreach ($zamenici as $zamenik) {
+                                ?>
+                                    <option value="<?php echo $zamenik['JAVNASIFRA']; ?>" data-zamenik="<?php echo $zamenik['SIFRA']; ?>"><?php echo $zamenik['NAZIV'] ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <label for="razlog[]" class="error" style="display: none">Izaberite</label>
+                        <?php } else { ?>
+                            <div><?php echo $_SESSION["ime"]; ?><input type="text" value="<?php echo $_SESSION["javna"]; ?>" name="menadzer" hidden></div>
+                        <?php } ?>
+                    </div>
+                </div>
+                <?php } ?>
 
                 <div class="col-md-4">
                     <div class="form-group">
@@ -139,10 +180,10 @@ foreach ($menadzeri as $menadzer) {
                         <select class="form-control" id="objekat" name="objekat">
                             <option value="999999999">-- Svi --</option>
                             <?php
-foreach ($skladista as $skladiste) {
-    echo "<option value='" . $skladiste["id"] . "'>" . $skladiste["id"] . " - " . $skladiste["NAZIV"] . "</option>";
-}
-?>
+                            foreach ($skladista as $skladiste) {
+                                echo "<option value='" . $skladiste["id"] . "'>" . $skladiste["id"] . " - " . $skladiste["NAZIV"] . "</option>";
+                            }
+                            ?>
                         </select>
                     </div>
                 </div>
@@ -152,16 +193,29 @@ foreach ($skladista as $skladiste) {
                         <select class="form-control" id="razlog" name="razlog">
                             <option value="999999999">-- Svi --</option>
                             <?php
-foreach ($razlozi as $razlog) {
-    ?>
-                            <option value="<?php echo $razlog['id']; ?>"><?php echo $razlog['naziv'] ?></option>
+                            foreach ($razlozi as $razlog) {
+                            ?>
+                                <option value="<?php echo $razlog['id']; ?>"><?php echo $razlog['naziv'] ?></option>
                             <?php
-}
-?>
+                            }
+                            ?>
                         </select>
                         <label for="razlog[]" class="error" style="display: none">Izaberite</label>
                     </div>
                 </div>
+                <?php if ($_SESSION["ovlascenje"] == 2) { ?>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Izvršio:</label>
+                            <select class="form-control" id="izvrsilac" name="izvrsilac">
+                                <option value="">-- Svi --</option>
+                                <option value="zamenici">Zamenici</option>
+                                <option value="vlastiti">Ja</option>
+                            </select>
+                            <label for="izvrsilac" class="error" style="display: none">Izaberite</label>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="">Ocena opšteg izlaganja robe u MPO:</label>
@@ -209,7 +263,9 @@ foreach ($razlozi as $razlog) {
             </div>
         </form>
     </div>
-   <div class="container"> <div id="exportPDF"></div></div>
+    <div class="container">
+        <div id="exportPDF"></div>
+    </div>
     <div class="container">
         <div id="tabela"></div>
     </div>
@@ -228,172 +284,192 @@ foreach ($razlozi as $razlog) {
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
 
     <script>
-    function downloadExcel() {
-        var form = $("#izvestaj");
-        var url = "promet-po-objektima-export.php";
-        // e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: form.serialize(),
-            success: function(data) {
-                $('#exportPDF').html("");
-                $('<iframe>', {
-                    src: 'promet-po-objektima-export.php?' + form.serialize(),
-                    frameborder: 0,
-                    scrolling: 'no'
-                }).appendTo('#exportPDF');
-                // window.open('promet-po-objektima-export.php?' + form.serialize());
-            }
-        });
-
-    };
-    $(document).ready(function() {
-
-        $('input[name="datum"]').daterangepicker({
-            autoUpdateInput: false,
-            maxDate: moment(),
-            locale: {
-                "cancelLabel": 'Očisti',
-                "applyLabel": "Primeni",
-                "fromLabel": "Od",
-                "toLabel": "Do",
-                "daysOfWeek": [
-                    "Ne",
-                    "Po",
-                    "Ut",
-                    "Sr",
-                    "Če",
-                    "Pe",
-                    "Su"
-                ],
-                "monthNames": [
-                    "Januar",
-                    "Februar",
-                    "Mart",
-                    "April",
-                    "Maj",
-                    "Jun",
-                    "Jul",
-                    "Augvst",
-                    "Septembar",
-                    "Oktobar",
-                    "Novembar",
-                    "Decembar"
-                ]
-            }
-        });
-
-        $('input[name="datum"]').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
-        });
-
-        $('input[name="datum"]').on('cancel.daterangepicker', function(ev, picker) {
-            //do something, like clearing an input
-            $('input[name="datum"]').val('');
-        });
-
-        $('#ocena_izlaganja_od').on('keyup', function() {
-            if ($(this).val() != '') {
-                $('#ocena_izlaganja_do').prop('disabled', false);
-            } else {
-                $('#ocena_izlaganja_do').prop('disabled', true);
-                $('#ocena_izlaganja_do').val("");
-            }
-        });
-
-        $('#ocena_izgleda_od').on('keyup', function() {
-            if ($(this).val() != '') {
-                $('#ocena_izgleda_do').prop('disabled', false);
-            } else {
-                $('#ocena_izgleda_do').prop('disabled', true);
-                $('#ocena_izgleda_do').val("");
-            }
-        });
-
-        $('#ocena_mpo_od').on('keyup', function() {
-            if ($(this).val() != '') {
-                $('#ocena_mpo_do').prop('disabled', false);
-            } else {
-                $('#ocena_mpo_do').prop('disabled', true);
-                $('#ocena_mpo_do').val("");
-            }
-        });
-
-
-    $("#menadzer").change(function() {
-            var data = {
-                menadzer: $('#menadzer').find('option:selected').data('menadzer'),
-            }
-            $.ajax({
-                type: "POST",
-                url: "menadzeri-select.php",
-                data: data,
-                success: function(data) {
-                    $("#objekat").html(data);
-                }
-            });
-        });
-
-
-        $("#izvestaj").submit(function(e) {
-            var form = $(this);
-            var url = form.attr('action');
-            e.preventDefault();
+        function downloadExcel() {
+            var form = $("#izvestaj");
+            var url = "promet-po-objektima-export.php";
+            // e.preventDefault();
             $.ajax({
                 type: "POST",
                 url: url,
                 data: form.serialize(),
                 success: function(data) {
-                    // console.log(data);
-                    $('#tabela').html(data);
-
-                    $('#tabela-prva').DataTable({
-                        dom: 'Blfrtip',
-
-                        buttons: [{
-                            text: 'Excel',
-                            action: function(e, dt, node, config) {
-                                downloadExcel();
-                            }
-                        }],
-
-                        customize: function(doc) {
-                            //pageMargins [left, top, right, bottom]
-                            doc.pageMargins = [50, 20, 50, 20];
-                        },
-
-                        "pageLength": 50,
-                        "lengthMenu": [
-                            [50, 200, 500, -1],
-                            [50, 200, 500, "Sve"]
-                        ],
-
-                        "language": {
-                            "sProcessing": "Procesiranje u toku...",
-                            "sLengthMenu": "Prikaži _MENU_ elemenata",
-                            "sZeroRecords": "Nije pronađen nijedan rezultat",
-                            "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
-                            "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
-                            "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
-                            "sInfoPostFix": "",
-                            "sSearch": "Pretraga:",
-                            "sUrl": "",
-                            "oPaginate": {
-                                "sFirst": "Početna",
-                                "sPrevious": "Prethodna",
-                                "sNext": "Sledeća",
-                                "sLast": "Poslednja"
-                            }
-                        }
-
-                    });
-
+                    $('#exportPDF').html("");
+                    $('<iframe>', {
+                        src: 'promet-po-objektima-export.php?' + form.serialize(),
+                        frameborder: 0,
+                        scrolling: 'no'
+                    }).appendTo('#exportPDF');
+                    // window.open('promet-po-objektima-export.php?' + form.serialize());
                 }
             });
 
+        };
+        $(document).ready(function() {
+
+            $('input[name="datum"]').daterangepicker({
+                autoUpdateInput: false,
+                maxDate: moment(),
+                locale: {
+                    "cancelLabel": 'Očisti',
+                    "applyLabel": "Primeni",
+                    "fromLabel": "Od",
+                    "toLabel": "Do",
+                    "daysOfWeek": [
+                        "Ne",
+                        "Po",
+                        "Ut",
+                        "Sr",
+                        "Če",
+                        "Pe",
+                        "Su"
+                    ],
+                    "monthNames": [
+                        "Januar",
+                        "Februar",
+                        "Mart",
+                        "April",
+                        "Maj",
+                        "Jun",
+                        "Jul",
+                        "Augvst",
+                        "Septembar",
+                        "Oktobar",
+                        "Novembar",
+                        "Decembar"
+                    ]
+                }
+            });
+
+            $('input[name="datum"]').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('DD-MM-YYYY') + ' - ' + picker.endDate.format('DD-MM-YYYY'));
+            });
+
+            $('input[name="datum"]').on('cancel.daterangepicker', function(ev, picker) {
+                //do something, like clearing an input
+                $('input[name="datum"]').val('');
+            });
+
+            $('#ocena_izlaganja_od').on('keyup', function() {
+                if ($(this).val() != '') {
+                    $('#ocena_izlaganja_do').prop('disabled', false);
+                } else {
+                    $('#ocena_izlaganja_do').prop('disabled', true);
+                    $('#ocena_izlaganja_do').val("");
+                }
+            });
+
+            $('#ocena_izgleda_od').on('keyup', function() {
+                if ($(this).val() != '') {
+                    $('#ocena_izgleda_do').prop('disabled', false);
+                } else {
+                    $('#ocena_izgleda_do').prop('disabled', true);
+                    $('#ocena_izgleda_do').val("");
+                }
+            });
+
+            $('#ocena_mpo_od').on('keyup', function() {
+                if ($(this).val() != '') {
+                    $('#ocena_mpo_do').prop('disabled', false);
+                } else {
+                    $('#ocena_mpo_do').prop('disabled', true);
+                    $('#ocena_mpo_do').val("");
+                }
+            });
+
+
+            $("#menadzer").change(function() {
+                if($("#zamenik").length != 0) {
+                    $("#zamenik").val("999999999");
+                }
+                var data = {
+                    menadzer: $('#menadzer').find('option:selected').data('menadzer'),
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "menadzeri-select.php",
+                    data: data,
+                    success: function(data) {
+                        $("#objekat").html(data);
+                    }
+                });
+            });
+            
+            $("#zamenik").change(function() {
+                $("#menadzer").val("999999999");
+                $("#objekat").val("999999999");
+                var data = {
+                    zamenik: $('#zamenik').find('option:selected').data('zamenik'),
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "zamenici-select.php",
+                    data: data,
+                    success: function(data) {
+                        $("#objekat").html(data);
+                    }
+                });
+            });
+
+
+            $("#izvestaj").submit(function(e) {
+                var form = $(this);
+                var url = form.attr('action');
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: form.serialize(),
+                    success: function(data) {
+                        // console.log(data);
+                        $('#tabela').html(data);
+
+                        $('#tabela-prva').DataTable({
+                            "ordering": false,
+                            dom: 'Blfrtip',
+
+                            buttons: [{
+                                text: 'Excel',
+                                action: function(e, dt, node, config) {
+                                    downloadExcel();
+                                }
+                            }],
+
+                            customize: function(doc) {
+                                //pageMargins [left, top, right, bottom]
+                                doc.pageMargins = [50, 20, 50, 20];
+                            },
+
+                            "pageLength": 50,
+                            "lengthMenu": [
+                                [50, 200, 500, -1],
+                                [50, 200, 500, "Sve"]
+                            ],
+
+                            "language": {
+                                "sProcessing": "Procesiranje u toku...",
+                                "sLengthMenu": "Prikaži _MENU_ elemenata",
+                                "sZeroRecords": "Nije pronađen nijedan rezultat",
+                                "sInfo": "Prikaz _START_ do _END_ od ukupno _TOTAL_ elemenata",
+                                "sInfoEmpty": "Prikaz 0 do 0 od ukupno 0 elemenata",
+                                "sInfoFiltered": "(filtrirano od ukupno _MAX_ elemenata)",
+                                "sInfoPostFix": "",
+                                "sSearch": "Pretraga:",
+                                "sUrl": "",
+                                "oPaginate": {
+                                    "sFirst": "Početna",
+                                    "sPrevious": "Prethodna",
+                                    "sNext": "Sledeća",
+                                    "sLast": "Poslednja"
+                                }
+                            }
+
+                        });
+
+                    }
+                });
+
+            });
         });
-    });
     </script>
 
 </body>

@@ -6,6 +6,7 @@ date_default_timezone_set('Europe/Belgrade');
 
 if (isset($_POST['submit'])) {
     $menadzer = $_POST['menadzer'];
+    $zamenik =  $_POST['zamenik'];
     $datum = $_POST['datum'];
     $vreme = $_POST['vreme'];
     $vreme_zavrsetka = date("H:i:s");
@@ -119,8 +120,8 @@ if (isset($_POST['submit'])) {
 
     $uredjaj = $conn -> real_escape_string($_SERVER['HTTP_USER_AGENT']);
 
-    $sql = "INSERT INTO izvestaji (menadzer, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, putanja_slike, opis_naloga1, ime_zaposlenog1, funkcija1, opis_naloga2, ime_zaposlenog2, funkcija2, opis_naloga3, ime_zaposlenog3, funkcija3, opis_naloga4, ime_zaposlenog4, funkcija4, opis_naloga5, ime_zaposlenog5, funkcija5, opis_naloga6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, funkcija7, opis_naloga8, ime_zaposlenog8, funkcija8, opis_naloga9, ime_zaposlenog9, funkcija9, opis_naloga10, ime_zaposlenog10, funkcija10, uredjaj)
-    VALUES ('$menadzer', '$datum', '$vreme', '$vreme_zavrsetka', '$ip_adresa', '$objekat', '$razlog', '$napomena', '$ocena_izlaganja',' $ocena_izgleda', '$ocena_mpo', '$putanja_slike', '$opis_naloga1', '$ime_zaposlenog1', '$funkcija1', '$opis_naloga2', '$ime_zaposlenog2', '$funkcija2', '$opis_naloga3', '$ime_zaposlenog3', '$funkcija3', '$opis_naloga4', '$ime_zaposlenog4', '$funkcija4', '$opis_naloga5', '$ime_zaposlenog5', '$funkcija5', '$opis_naloga6', '$ime_zaposlenog6', '$funkcija6', '$opis_naloga7', '$ime_zaposlenog7', '$funkcija7', '$opis_naloga8', '$ime_zaposlenog8', '$funkcija8', '$opis_naloga9', '$ime_zaposlenog9', '$funkcija9', '$opis_naloga10', '$ime_zaposlenog10', '$funkcija10', '$uredjaj')";
+    $sql = "INSERT INTO izvestaji (menadzer, zamenik, datum, vreme, vreme_zavrsetka, ip_adresa, objekat, razlog, napomena, ocena_izlaganja, ocena_izgleda, ocena_mpo, putanja_slike, opis_naloga1, ime_zaposlenog1, funkcija1, opis_naloga2, ime_zaposlenog2, funkcija2, opis_naloga3, ime_zaposlenog3, funkcija3, opis_naloga4, ime_zaposlenog4, funkcija4, opis_naloga5, ime_zaposlenog5, funkcija5, opis_naloga6, ime_zaposlenog6, funkcija6, opis_naloga7, ime_zaposlenog7, funkcija7, opis_naloga8, ime_zaposlenog8, funkcija8, opis_naloga9, ime_zaposlenog9, funkcija9, opis_naloga10, ime_zaposlenog10, funkcija10)
+    VALUES ('$menadzer', '$zamenik', '$datum', '$vreme', '$vreme_zavrsetka', '$ip_adresa', '$objekat', '$razlog', '$napomena', '$ocena_izlaganja',' $ocena_izgleda', '$ocena_mpo', '$putanja_slike', '$opis_naloga1', '$ime_zaposlenog1', '$funkcija1', '$opis_naloga2', '$ime_zaposlenog2', '$funkcija2', '$opis_naloga3', '$ime_zaposlenog3', '$funkcija3', '$opis_naloga4', '$ime_zaposlenog4', '$funkcija4', '$opis_naloga5', '$ime_zaposlenog5', '$funkcija5', '$opis_naloga6', '$ime_zaposlenog6', '$funkcija6', '$opis_naloga7', '$ime_zaposlenog7', '$funkcija7', '$opis_naloga8', '$ime_zaposlenog8', '$funkcija8', '$opis_naloga9', '$ime_zaposlenog9', '$funkcija9', '$opis_naloga10', '$ime_zaposlenog10', '$funkcija10')";
 
     if (mysqli_query($conn, $sql)) {
         echo "Izveštaj je uspešno upisan u bazu podataka.";
@@ -137,6 +138,7 @@ if (isset($_POST['submit'])) {
 
 $myfile = fopen("protected/raw.txt", "a") or die("Unable to open file!");
 $txt = $menadzer . " | "
+    . $zamenik . " | "
     . $datum . " | "
     . $vreme . " | "
     . $vreme_zavrsetka . " | "
@@ -187,8 +189,7 @@ $txt = $menadzer . " | "
     . $opis_naloga10 . " | "
     . $ime_zaposlenog10 . " | "
 //  . $saglasan10 . " | "
-    . $funkcija10  . " | "
-    . $uredjaj . "\n";
+    . $funkcija10 . "\n";
 
 fwrite($myfile, $txt);
 fclose($myfile);

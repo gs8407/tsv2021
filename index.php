@@ -20,6 +20,26 @@ if ($result->num_rows > 0) {
     }
 }
 
+// Provera ovlašćenja i nadređenog
+if ($result = $conn->query("SELECT OVLASCENJE, NADREDJENI FROM korisnik WHERE JAVNA = '$_SESSION[javna]'")) {
+    $res = $result->fetch_assoc();
+    $ovlascenje = $res["OVLASCENJE"];
+    $nadredjeni = $res["NADREDJENI"];
+    $result->free_result();
+}
+
+$nadredjeni_array = explode(",", $nadredjeni);
+
+$lista_nadredjenih = "";
+
+foreach ($nadredjeni_array as $key => $value) {
+    if ($result = $conn->query("SELECT IME, JAVNA FROM korisnik WHERE JAVNA in ($value)")) {
+        $res = $result->fetch_assoc();
+        $result->free_result();
+    }
+    $lista_nadredjenih .= "<option value=" . $res["JAVNA"] . ">" . $res["IME"] . "</option>";
+}
+
 date_default_timezone_set('Europe/Belgrade');
 function getUserIP()
 {
@@ -105,7 +125,14 @@ if ($result_funkcija->num_rows > 0) {
     }
 }
 
-$sql_objekat = "SELECT id, NAZIV, SIFRA, WILDCARD FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA] OR WILDCARD = 1";
+    $sifra = $mpo["SIFRA"];
+
+    //Provera ukoliko je zamenik i prikaz skladišta
+    if ($ovlascenje == 1) {
+        $sql_objekat = "SELECT id, NAZIV, SIFRA, WILDCARD FROM skla WHERE FIND_IN_SET($sifra,SIFRAZAMENIKA) OR WILDCARD = 1";
+    } else {
+        $sql_objekat = "SELECT id, NAZIV, SIFRA, WILDCARD FROM skla WHERE SIFRAMENADZERA = $mpo[SIFRA] OR WILDCARD = 1";
+    }
 $result_objekat = $conn->query($sql_objekat);
 if ($result_objekat->num_rows > 0) {
     while ($row = $result_objekat->fetch_assoc()) {
@@ -128,6 +155,10 @@ if ($result_objekat->num_rows > 0) {
         </div>
         <form id="poseta" method="POST" enctype="multipart/form-data">
             <input type="hidden" class="form-control" id="menadzer" name="menadzer" value="<?php echo $_SESSION["javna"]; ?>">
+            <!-- Ukoliko je zamenik upisuje se njegova JAVNA u polje zamenikmenadzera -->
+            <input type="hidden" class="form-control" id="zamenik" name="zamenik" value="<?php if ($ovlascenje == 1) {
+                                                                                                echo $_SESSION["javna"];
+                                                                                            } else echo "0" ?>">
             <input type="hidden" class="form-control" id="datum" name="datum" value="<?php echo date("Y-m-d"); ?>">
             <input type="hidden" class="form-control" id="vreme" name="vreme" value="<?php echo date("H:i:s"); ?>">
             <input type="hidden" class="form-control" id="ip_adresa" name="ip_adresa" value="<?php echo getUserIP(); ?>">
@@ -146,6 +177,14 @@ foreach ($skladista as $skladiste) {
                         </select>
                     </div>
                 </div>
+             <?php if ($ovlascenje == 1) { ?>
+                    <div class="col-md-6 nadredjeni-wrapper" style="display: none">
+                        <div class="form-group">
+                            <label for="nadredjeni">Nadređeni:</label>
+                            <?php echo "<select class='form-control' id='nadredjeni' name='nadredjeni'><option value='' selected required>-- Izaberite menadžera --</option>" . $lista_nadredjenih . "</select>"; ?>
+                        </div>
+                    </div>
+                <?php } ?>
                 <div class="col-md-12">
                     <div class="form-group">
                         <label>Razlog posete:</label>
@@ -619,6 +658,12 @@ foreach ($ocena_mpo as $ocena) {
                     return $('#objekat').find('option:selected').data('wildcard') == 1;
                 }
             },
+             nadredjeni: {
+                    required: true,
+                    // required: function(element) {
+                    //     return $('#nadredjeni').length == 0;
+                    // }
+                },
             "razlog[]": {
                 // required: true,
                 required: function(element) {
@@ -634,6 +679,7 @@ foreach ($ocena_mpo as $ocena) {
             ocena_izgleda: "Izaberite",
             ocena_mpo: "Izaberite",
             napomena: "Ovo polje je obavezno",
+            nadredjeni: "Izaberite",
 
         }, // end messages
 
@@ -750,6 +796,32 @@ foreach ($ocena_mpo as $ocena) {
 
         console.log($(this).parent().remove());
     });
+        // Dobijanje JAVNA od glavnog menadžera
+        <?php if ($ovlascenje == 1) { ?>
+            $(document).on('change', '#objekat', function() {
+                let objekat = $("#objekat option:selected").val();
+                if (objekat == "1000" || objekat == "1001") {
+                    $(".nadredjeni-wrapper").show()
+                } else {
+                    $(".nadredjeni-wrapper").hide()
+                }
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        "objekat": objekat
+                    },
+                    url: "menadzer-javna-ajax.php",
+                    success: function(result) {
+                        $("#menadzer").val(result)
+                    }
+                });
+            });
+
+            $(document).on('change', '#nadredjeni', function() {
+                $("#menadzer").val($("#nadredjeni").find(":selected").val())
+            });
+
+        <?php } ?>
     </script>
 
     <div class="modal" tabindex="-1" role="dialog" id="uspesno">
